@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    {% load static %}
+    {% load compress %}
+
+    {% compress css %}
+        <link type="text/x-scss" href="{% static 'elephantus/css/bootstrap/bootstrap.scss' %}" rel="stylesheet" media="screen">
+    {% endcompress %}
+</head>
+<body>
+{% include 'shared/sidebar.html' %}
+
+
+<section class="main">
+    {% include 'shared/toolbar.html' %}
+
+    <section class="content">
+        <div class="m-3">
+            {% block content %} {% endblock %}
+        </div>
+    </section>
+
+     {% include 'shared/footer.html' %}
+</section>
+</body>
+</html>

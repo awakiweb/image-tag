@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %} Categorias {% endblock %}
+{% block content %}
+
+    <form action="/search_category/" method="get">
+        <input type="text" placeholder="Buscar Categoria" id="txtSearch" name="txtSearch">
+        <input type="submit" value="Buscar">
+    </form>
+
+{% endblock %}

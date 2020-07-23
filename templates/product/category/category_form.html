@@ -1,0 +1,25 @@
+{% extends 'dashboard/home.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="container">
+        <a href="{% url 'category_list' %}" class="btn btn-primary shadow-sm mb-3"><i class="fa fa-backward"></i> Regresar</a>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Nueva Categoria</h4>
+                <hr>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <input type="submit" class="btn btn-primary" value="Guardar">
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

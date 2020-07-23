@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+</head>
+<body>
+{% include 'navigation.html' %}
+
+<h1>Bienvenido {{ full_name | upper }}</h1>
+
+<h2>Ejemplo de Listas</h2>
+{% if list %}
+    <ul>
+        {% for element in list %}
+            <li>{{ element }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>La lista no tiene informacion</p>
+{% endif %}
+
+</body>
+</html>

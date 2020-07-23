@@ -1,0 +1,15 @@
+@media (max-width: 576px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    margin-left: 0 !important;
+  }
+
+  footer {
+    .footer {
+      margin-left: 0 !important;
+    }
+  }
+}

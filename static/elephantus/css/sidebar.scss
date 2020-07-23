@@ -1,0 +1,46 @@
+@import "variable";
+
+li {
+  padding: 5px 0;
+}
+
+.sidebar {
+  overflow: auto;
+  font-size: 12px;
+  font-weight: 200;
+  background-color: $info !important;
+  position: fixed;
+  top: 0;
+  width: 225px !important;
+  height: 100% !important;
+  color: $text-color;
+
+  .navigation {
+    margin-top: 25px;
+
+    ul {
+      list-style-type: none;
+      font-size: 16px;
+
+      padding: 0 15px;
+      margin: 0;
+
+      li a {
+        text-decoration: none;
+        list-style-type: none;
+        font-size: 16px;
+        color: $text-color;
+
+        transition: 0.3s all ease-in-out;
+      }
+
+      li a:hover {
+        list-style-type: none;
+        font-size: 16px;
+        color: $white;
+
+        transition: 0.3s all ease-in-out;
+      }
+    }
+  }
+}

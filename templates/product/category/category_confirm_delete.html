@@ -1,0 +1,20 @@
+{% extends 'dashboard/home.html' %}
+{% block content %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4>Esta seguro que desea eliminar el siguiente elemento ?</h4>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="d-none">
+                    {{ form }}
+                </div>
+
+                <hr>
+                <input type="submit" class="btn btn-danger" value="Eliminar">
+                <a href="{% url 'category_list' %}" class="btn btn-primary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
