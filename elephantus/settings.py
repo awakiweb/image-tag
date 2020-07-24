@@ -74,7 +74,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+# change this for production
+CORS_ORIGIN_WHITELIST = ['localhost:4200']
+
 ROOT_URLCONF = 'elephantus.urls'
 
 # max size for upload: 2.5 MB
