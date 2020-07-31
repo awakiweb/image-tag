@@ -41,6 +41,8 @@ class Subcategory(models.Model):
         verbose_name = 'SubCategory'
         verbose_name_plural = 'SubCategories'
 
+        ordering = ['order']
+
     def __str__(self):
         return "{}".format(self.name)
 
