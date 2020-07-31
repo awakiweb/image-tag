@@ -77,6 +77,7 @@ class Size(models.Model):
 
 class Unit(models.Model):
     name = models.CharField(max_length=150)
+    symbol = models.CharField(max_length=10)
     description = models.TextField(blank=True, null=True)
 
     active = models.BooleanField(default=True)
@@ -107,10 +108,10 @@ class Product(models.Model):
     unit = models.ForeignKey(Unit, related_name='products', on_delete=models.CASCADE)
     color = models.ForeignKey(Color, related_name='products', on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     subcategory = models.ForeignKey(Subcategory, related_name='products', on_delete=models.CASCADE)
 
     name = models.CharField(max_length=150)
+    model = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
 
     thumb = models.ImageField(upload_to='uploads/products', null=True, blank=True)

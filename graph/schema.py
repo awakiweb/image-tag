@@ -174,6 +174,7 @@ class CategoryInput(graphene.InputObjectType):
     name = graphene.String()
     description = graphene.String()
     order = graphene.ID()
+    active = graphene.Boolean()
 
 
 class CreateCategory(graphene.Mutation):
@@ -190,7 +191,8 @@ class CreateCategory(graphene.Mutation):
         category_instance = Category(
             name=input.name,
             description=input.description,
-            order=input.order
+            order=input.order,
+            active=True
         )
 
         category_instance.save()
@@ -215,6 +217,7 @@ class UpdateCategory(graphene.Mutation):
             category_instance.name = input.name
             category_instance.description = input.description
             category_instance.order = input.order
+            category_instance.active = input.active
 
             category_instance.save()
             return UpdateCategory(ok=ok, category=category_instance)

@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 
-    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=False))),
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 
     path('dashboard/', include('dashboard.urls')),
     path('products/', include('product.urls'))
