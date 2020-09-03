@@ -1,18 +1,13 @@
 import graphene
 from graphene_django.types import DjangoObjectType, ObjectType
-from product.models import Category, Subcategory, Brand, Size, Unit, Color, Product, ProductPrice
+from product.models import Category, Brand, Size, Unit, Color, Product, ProductPrice
 
 
-## TYPES MODELS ##
+# ************** TYPES MODELS ************** #
 # ************** #
 class CategoryType(DjangoObjectType):
     class Meta:
         model = Category
-
-
-class SubcategoryType(DjangoObjectType):
-    class Meta:
-        model = Subcategory
 
 
 class BrandType(DjangoObjectType):
@@ -45,14 +40,11 @@ class ProductPriceType(DjangoObjectType):
         model = ProductPrice
 
 
-## QUERY MODELS ##
+# ************** QUERY MODELS ************** #
 # ************** #
 class Query(ObjectType):
     category = graphene.Field(CategoryType, id=graphene.Int())
     categories = graphene.List(CategoryType)
-
-    subcategory = graphene.Field(SubcategoryType, id=graphene.Int())
-    subcategories = graphene.List(SubcategoryType)
 
     brand = graphene.Field(BrandType, id=graphene.Int())
     brands = graphene.List(BrandType)
@@ -83,18 +75,6 @@ class Query(ObjectType):
 
     def resolve_categories(self, info, **kwargs):
         return Category.objects.all()
-
-    # subcategory
-    def resolve_subcategory(self, info, **kwargs):
-        identity = kwargs.get('id')
-
-        if identity is not None:
-            return Subcategory.objects.get(pk=identity)
-
-        return None
-
-    def resolve_subcategories(self, info, **kwargs):
-        return Subcategory.objects.all()
 
     # brand
     def resolve_brand(self, info, **kwargs):

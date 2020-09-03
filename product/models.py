@@ -6,6 +6,8 @@ class Category(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
 
+    parent = models.ForeignKey('self', related_name='categories', null=True, blank=True, on_delete=models.CASCADE)
+
     order = models.IntegerField()
     active = models.BooleanField(default=True)
 
@@ -25,31 +27,6 @@ class Category(models.Model):
         return reverse('category_list')
 
 
-class Subcategory(models.Model):
-    category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
-
-    name = models.CharField(max_length=150)
-    description = models.TextField(blank=True, null=True)
-
-    order = models.IntegerField()
-    active = models.BooleanField(default=True)
-
-    created_at = models.DateField(auto_now_add=True, null=True)
-    updated_at = models.DateField(auto_now=True, null=True)
-
-    class Meta:
-        verbose_name = 'SubCategory'
-        verbose_name_plural = 'SubCategories'
-
-        ordering = ['order']
-
-    def __str__(self):
-        return "{}".format(self.name)
-
-    def get_absolute_url(self):
-        return reverse('subcategory_list')
-
-
 class Brand(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
@@ -65,8 +42,6 @@ class Brand(models.Model):
 
 class Size(models.Model):
     name = models.CharField(max_length=150)
-    description = models.TextField(blank=True, null=True)
-
     active = models.BooleanField(default=True)
 
     created_at = models.DateField(auto_now_add=True, null=True)
@@ -74,6 +49,7 @@ class Size(models.Model):
 
     def __str__(self):
         return "{}".format(self.name)
+
 
 class Unit(models.Model):
     name = models.CharField(max_length=150)
@@ -108,7 +84,7 @@ class Product(models.Model):
     unit = models.ForeignKey(Unit, related_name='products', on_delete=models.CASCADE)
     color = models.ForeignKey(Color, related_name='products', on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
-    subcategory = models.ForeignKey(Subcategory, related_name='products', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
 
     name = models.CharField(max_length=150)
     model = models.CharField(max_length=150)

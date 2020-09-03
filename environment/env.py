@@ -8,7 +8,7 @@ prod_port = '5432'
 
 dev_database = 'elephantus_db'
 dev_user = 'postgres'
-dev_password = '1234'
+dev_password = '12345'
 dev_host = 'localhost'
 dev_port = '5432'
 

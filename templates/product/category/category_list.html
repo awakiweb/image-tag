@@ -31,6 +31,8 @@
                             <th></th>
                             <th>ID</th>
                             <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Orden de Aparición</th>
                             <th class="text-center">Estado</th>
                         </tr>
                         </thead>
@@ -52,6 +54,8 @@
                                 </td>
                                 <td width="60">{{ category.id }}</td>
                                 <td>{{ category.name }}</td>
+                                <td>{{ category.parent.name }}</td>
+                                <td>{{ category.order }}</td>
 
                                 {% if category.active %}
                                     <td class="text-center" width="60"><span class="bg-primary label">Activo</span>

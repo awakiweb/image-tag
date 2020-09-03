@@ -1,40 +1,23 @@
-from django.forms import ModelForm, TextInput, Textarea, NumberInput
-from .models import Category, Subcategory
+from django.forms import ModelForm, TextInput, Textarea, NumberInput, Select
+from .models import Category
 
 
 class CategoryForm(ModelForm):
 
     class Meta:
         model = Category
-        fields = ['name', 'description', 'order']
+        fields = ['name', 'description', 'parent', 'order']
 
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
             'description': Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'parent': Select(attrs={'class': 'form-control custom-select'}),
             'order': NumberInput(attrs={'class': 'form-control'})
         }
 
         labels = {
             'name': 'Nombre de la Categoria',
             'description': 'Descripcion',
-            'order': 'Orden de Aparicion',
-        }
-
-class SubcategoryForm(ModelForm):
-
-    class Meta:
-        model = Subcategory
-        fields = ['category', 'name', 'description', 'order']
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows': 5}),
-            'order': NumberInput(attrs={'class': 'form-control'})
-        }
-
-        labels = {
-            'category': 'Categoria',
-            'name': 'Nombre de la Sub Categoria',
-            'description': 'Descripcion',
+            'parent': 'Categoria',
             'order': 'Orden de Aparicion',
         }

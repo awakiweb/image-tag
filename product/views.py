@@ -1,60 +1,8 @@
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView
 
-from .models import Category, Subcategory
-from .forms import CategoryForm, SubcategoryForm
-
-
-
-class SubcategoryListView(generic.ListView):
-    template_name = 'product/subcategory/subcategory_list.html'
-    context_object_name = 'category_list'
-    paginate_by = 5
-
-    def get_queryset(self):
-        return Subcategory.objects.all()
-
-
-class SubcategorySearchView(generic.ListView):
-    template_name = 'product/subcategory/subcategory_list.html'
-    context_object_name = 'category_list'
-
-    def get_queryset(self, **kwargs):
-        param = self.request.GET.get('txtsearch')
-        return Subcategory.objects.filter(name__icontains=param)
-
-
-class SubcategoryCreate(CreateView):
-    form_class = SubcategoryForm
-    template_name = 'product/subcategory/subcategory_form.html'
-
-
-class SubcategoryUpdate(UpdateView):
-    model = Subcategory
-    form_class = SubcategoryForm
-    template_name = 'product/subcategory/subcategory_form.html'
-
-
-class SubcategoryDelete(UpdateView):
-    model = Subcategory
-    fields = ['active']
-    template_name = 'product/subcategory/subcategory_confirm_delete.html'
-
-    def post(self, request, *args, **kwargs):
-        request.POST = request.POST.copy()
-        request.POST['active'] = False
-        return super(SubcategoryDelete, self).post(request, **kwargs)
-
-
-class SubcategoryRestore(UpdateView):
-    model = Subcategory
-    fields = ['active']
-    template_name = 'product/subcategory/subcategory_confirm_restore.html'
-
-    def post(self, request, *args, **kwargs):
-        request.POST = request.POST.copy()
-        request.POST['active'] = True
-        return super(SubcategoryRestore, self).post(request, **kwargs)
+from .models import Category
+from .forms import CategoryForm
 
 
 # ****************************************

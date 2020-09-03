@@ -2,13 +2,19 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="elephantus_db@localhost" uuid="d44004e3-4541-45d6-8923-65af02c450b7">
-      <database-info product="PostgreSQL" version="9.5.10" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5">
+      <database-info product="PostgreSQL" version="9.5.10" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="9.5.10">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
-      <introspection-schemas>elephantus_db:public</introspection-schemas>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="elephantus_db">
+            <node kind="schema" qname="public" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
   </component>
 </project>
