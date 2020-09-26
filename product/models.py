@@ -1,30 +1,4 @@
 from django.db import models
-from django.urls import reverse
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=150)
-    description = models.TextField(blank=True, null=True)
-
-    parent = models.ForeignKey('self', related_name='categories', null=True, blank=True, on_delete=models.CASCADE)
-
-    order = models.IntegerField()
-    active = models.BooleanField(default=True)
-
-    created_at = models.DateField(auto_now_add=True, null=True)
-    updated_at = models.DateField(auto_now=True, null=True)
-
-    class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
-
-        ordering = ['order']
-
-    def __str__(self):
-        return "{}".format(self.name)
-
-    def get_absolute_url(self):
-        return reverse('category_list')
 
 
 class Brand(models.Model):
@@ -84,7 +58,7 @@ class Product(models.Model):
     unit = models.ForeignKey(Unit, related_name='products', on_delete=models.CASCADE)
     color = models.ForeignKey(Color, related_name='products', on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    category = models.ForeignKey('category.Category', related_name='products', on_delete=models.CASCADE)
 
     name = models.CharField(max_length=150)
     model = models.CharField(max_length=150)

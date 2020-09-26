@@ -26,5 +26,6 @@ urlpatterns = [
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 
     path('dashboard/', include('dashboard.urls')),
+    path('categories/', include('category.urls')),
     path('products/', include('product.urls'))
 ]

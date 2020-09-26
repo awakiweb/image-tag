@@ -1,23 +1,4 @@
 from django.forms import ModelForm, TextInput, Textarea, NumberInput, Select
-from .models import Category
+from .models import Product
 
 
-class CategoryForm(ModelForm):
-
-    class Meta:
-        model = Category
-        fields = ['name', 'description', 'parent', 'order']
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows': 5}),
-            'parent': Select(attrs={'class': 'form-control custom-select'}),
-            'order': NumberInput(attrs={'class': 'form-control'})
-        }
-
-        labels = {
-            'name': 'Nombre de la Categoria',
-            'description': 'Descripcion',
-            'parent': 'Categoria',
-            'order': 'Orden de Aparicion',
-        }

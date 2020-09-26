@@ -10,8 +10,10 @@ rm -r */migrations
 # create migrations
 
 python manage.py makemigrations
+python manage.py makemigrations category
 python manage.py migrate
 
 # run seeds
 
 python manage.py loaddata seeds/01_initial_superusers
+python manage.py loaddata seeds/02_initial_categories

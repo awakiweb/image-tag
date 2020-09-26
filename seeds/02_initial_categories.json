@@ -1,0 +1,98 @@
+[
+  {
+    "model": "category.category",
+    "pk": 1,
+    "fields": {
+      "name": "Motocicletas y Repuestos",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 2,
+    "fields": {
+      "name": "Productos de Ferreteria",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 3,
+    "fields": {
+      "name": "Productos Famaceuticos",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 4,
+    "fields": {
+      "name": "Productos Alimenticios",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 5,
+    "fields": {
+      "name": "productos Informaticos",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 6,
+    "fields": {
+      "name": "Electrodomesticos",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 6,
+    "fields": {
+      "name": "Vestimenta",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 7,
+    "fields": {
+      "name": "Mobiliario y Equipo de Oficina",
+      "description": "",
+      "level": 0,
+      "parent": null,
+      "order": 0,
+      "active": true
+    }
+  }
+]

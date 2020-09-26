@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'api',
     'dashboard',
     'employee',
+    'category',
     'product',
     'inventory',
     'money'
