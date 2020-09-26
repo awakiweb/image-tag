@@ -6,7 +6,7 @@ from .forms import CategoryForm
 
 
 class CategoryListView(generic.ListView):
-    template_name = 'product/../templates/category/category_list.html'
+    template_name = 'category/category_list.html'
     context_object_name = 'category_list'
     paginate_by = 5
 
@@ -15,7 +15,7 @@ class CategoryListView(generic.ListView):
 
 
 class CategorySearchView(generic.ListView):
-    template_name = 'product/../templates/category/category_list.html'
+    template_name = 'category/category_list.html'
     context_object_name = 'category_list'
 
     def get_queryset(self, **kwargs):
@@ -25,19 +25,19 @@ class CategorySearchView(generic.ListView):
 
 class CategoryCreate(CreateView):
     form_class = CategoryForm
-    template_name = 'product/../templates/category/category_form.html'
+    template_name = 'category/category_form.html'
 
 
 class CategoryUpdate(UpdateView):
     model = Category
     form_class = CategoryForm
-    template_name = 'product/../templates/category/category_form.html'
+    template_name = 'category/category_form.html'
 
 
 class CategoryDelete(UpdateView):
     model = Category
     fields = ['active']
-    template_name = 'product/../templates/category/category_confirm_delete.html'
+    template_name = 'category/category_confirm_delete.html'
 
     def post(self, request, *args, **kwargs):
         request.POST = request.POST.copy()
@@ -48,7 +48,7 @@ class CategoryDelete(UpdateView):
 class CategoryRestore(UpdateView):
     model = Category
     fields = ['active']
-    template_name = 'product/../templates/category/category_confirm_restore.html'
+    template_name = 'category/category_confirm_restore.html'
 
     def post(self, request, *args, **kwargs):
         request.POST = request.POST.copy()

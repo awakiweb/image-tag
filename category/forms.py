@@ -6,7 +6,7 @@ class CategoryForm(ModelForm):
 
     class Meta:
         model = Category
-        fields = ['name', 'description', 'parent', 'order']
+        fields = ['name', 'description', 'parent', 'order', 'level']
 
         widgets = {
             'name': TextInput(attrs={'class': 'form-control'}),
