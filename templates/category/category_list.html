@@ -2,49 +2,61 @@
 {% block content %}
 
     <a href="{% url 'category_add' %}" class="btn btn-primary shadow-sm mb-3"><i class="fa fa-plus"></i> Nuevo</a>
-    <div class="card shadow-sm">
-        <div class="card-header">
-            <div class="card-title mb-0">Lista de Categorias</div>
+
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Lista de Categorias <small></small></h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i
+                            class="fa fa-wrench"></i></a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Settings 1</a>
+                        <a class="dropdown-item" href="#">Settings 2</a>
+                    </div>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
         </div>
-        <div class="card-body">
+        <div class="x_content">
 
             {% if category_list %}
-                <form class="row mb-3" action="{% url 'category_search' %}" method="get">
+                <form action="{% url 'category_search' %}" method="get">
                     {% csrf_token %}
 
-                    <div class="col-12">
-                        <div class="input-group">
-                            <input type="text" id="txtsearch" name="txtsearch" class="form-control"
-                                   placeholder="Buscar">
+                    <div class="input-group">
+                        <input type="text" id="txtsearch" name="txtsearch" class="form-control" placeholder="Buscar">
 
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Buscar</button>
-                            </div>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
                         </div>
                     </div>
                 </form>
 
-                <div class="table-responsive rounded">
-                    <table class="table table-sm table-striped table-bordered rounded">
-                        <thead class="thead-dark">
-                        <tr>
+                <div class="table-responsive">
+                    <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                        <tr class="headings">
                             <th></th>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Categoria</th>
-                            <th>Orden de Aparición</th>
-                            <th class="text-center">Estado</th>
+                            <th class="column-title">Nombre</th>
+                            <th class="column-title">Categoria</th>
+                            <th class="column-title">Orden de Aparición</th>
+                            <th class="column-title text-center">Estado</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for category in category_list %}
                             <tr>
-                                <td width="80">
-                                    <a href="{% url 'category_update' category.id %}" class="btn btn-primary btn-sm"><i
+                                <td width="100">
+                                    <a href="{% url 'category_update' category.id %}" class="badge badge-primary p-2"><i
                                             class="fa fa-pencil"></i></a>
 
                                     {% if category.active %}
-                                        <a href="{% url 'category_delete' category.id %}" class="btn btn-danger btn-sm"><i
+                                        <a href="{% url 'category_delete' category.id %}" class="badge badge-danger p-2"><i
                                                 class="fa fa-trash"></i></a>
                                     {% else %}
                                         <a href="{% url 'category_restore' category.id %}"
@@ -52,16 +64,15 @@
                                                 class="fa fa-recycle"></i></a>
                                     {% endif %}
                                 </td>
-                                <td width="60">{{ category.id }}</td>
                                 <td>{{ category.name }}</td>
                                 <td>{{ category.parent.name }}</td>
                                 <td>{{ category.order }}</td>
 
                                 {% if category.active %}
-                                    <td class="text-center" width="60"><span class="bg-primary label">Activo</span>
+                                    <td class="text-center" width="60"><span class="badge badge-primary p-2">Activo</span>
                                     </td>
                                 {% else %}
-                                    <td class="text-center" width="60"><span class="bg-danger label">Inactivo</span>
+                                    <td class="text-center" width="60"><span class="badge badge-danger p-2">Inactivo</span>
                                     </td>
                                 {% endif %}
                             </tr>
@@ -104,7 +115,7 @@
             {% else %}
                 <h1>No se ha encontrado ninguna categoria</h1>
             {% endif %}
+
         </div>
     </div>
-
 {% endblock %}

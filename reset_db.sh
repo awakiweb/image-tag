@@ -10,6 +10,7 @@ rm -r */migrations
 # create migrations
 
 python manage.py makemigrations
+python manage.py makemigrations employee
 python manage.py makemigrations category
 python manage.py migrate
 

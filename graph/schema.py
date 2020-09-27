@@ -1,6 +1,8 @@
 import graphene
 from graphene_django.types import DjangoObjectType, ObjectType
-from product.models import Category, Brand, Size, Unit, Color, Product, ProductPrice
+
+from category.models import Category
+from product.models import Brand, Size, Unit, Color, Product, ProductPrice
 
 
 # ************** TYPES MODELS ************** #
@@ -153,7 +155,8 @@ class CategoryInput(graphene.InputObjectType):
     id = graphene.ID()
     name = graphene.String()
     description = graphene.String()
-    order = graphene.ID()
+    level = graphene.Int()
+    order = graphene.Int()
     active = graphene.Boolean()
 
 
@@ -172,6 +175,7 @@ class CreateCategory(graphene.Mutation):
             name=input.name,
             description=input.description,
             order=input.order,
+            level=input.level,
             active=True
         )
 
@@ -197,6 +201,7 @@ class UpdateCategory(graphene.Mutation):
             category_instance.name = input.name
             category_instance.description = input.description
             category_instance.order = input.order
+            category_instance.level = input.level
             category_instance.active = input.active
 
             category_instance.save()

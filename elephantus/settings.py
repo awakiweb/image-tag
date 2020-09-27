@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'bootstrap4',
-    'compressor',
     'crispy_forms',
 
     'graph',
@@ -161,17 +160,6 @@ JWT_AUTH = {
     'JWT_PAYLOAD_HANDLER': 'api.jwt.jwt_payload_handler',
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.jwt.jwt_response_payload_handler',
 }
-
-# COMPRESS PRECOMPILERS
-
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
-)
-
-# on production mode
-# COMPRESS_OFFLINE = True
-# LIBSASS_OUTPUT_STYLE = 'compressed'
-# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
 # Internationalization
