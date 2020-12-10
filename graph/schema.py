@@ -1,55 +1,28 @@
 import graphene
-from graphene_django.types import DjangoObjectType, ObjectType
+from graphene_django.types import ObjectType
 
 from category.models import Category
-from product.models import Brand, Size, Unit, Color, Product, ProductPrice
+from category.schema import CategoryType
 
-
-# ************** TYPES MODELS ************** #
-# ************** #
-class CategoryType(DjangoObjectType):
-    class Meta:
-        model = Category
-
-
-class BrandType(DjangoObjectType):
-    class Meta:
-        model = Brand
-
-
-class SizeType(DjangoObjectType):
-    class Meta:
-        model = Size
-
-
-class UnitType(DjangoObjectType):
-    class Meta:
-        model = Unit
-
-
-class ColorType(DjangoObjectType):
-    class Meta:
-        model = Color
-
-
-class ProductType(DjangoObjectType):
-    class Meta:
-        model = Product
-
-
-class ProductPriceType(DjangoObjectType):
-    class Meta:
-        model = ProductPrice
+from product.models import Brand, Model, Size, Unit, Color, Product, ProductPrice
+from product.schema import BrandType, ModelType, SizeType, UnitType, ColorType, ProductType, ProductPriceType
 
 
 # ************** QUERY MODELS ************** #
 # ************** #
 class Query(ObjectType):
+    # ************** CATEGORIES ************** #
+    # ************** #
     category = graphene.Field(CategoryType, id=graphene.Int())
     categories = graphene.List(CategoryType)
 
+    # ************** PRODUCTS ************** #
+    # ************** #
     brand = graphene.Field(BrandType, id=graphene.Int())
     brands = graphene.List(BrandType)
+
+    model = graphene.Field(ModelType, id=graphene.Int())
+    models = graphene.List(ModelType)
 
     size = graphene.Field(SizeType, id=graphene.Int())
     sizes = graphene.List(SizeType)
@@ -66,7 +39,8 @@ class Query(ObjectType):
     productPrice = graphene.Field(ProductPriceType, id=graphene.Int())
     productPrices = graphene.List(ProductPriceType)
 
-    # category
+    # ************** CATEGORIES ************** #
+    # ************** #
     def resolve_category(self, info, **kwargs):
         identity = kwargs.get('id')
 
@@ -78,7 +52,8 @@ class Query(ObjectType):
     def resolve_categories(self, info, **kwargs):
         return Category.objects.all()
 
-    # brand
+    # ************** BRANDS ************** #
+    # ************** #
     def resolve_brand(self, info, **kwargs):
         identity = kwargs.get('id')
 
@@ -89,6 +64,19 @@ class Query(ObjectType):
 
     def resolve_brands(self, info, **kwargs):
         return Brand.objects.all()
+
+    # ************** MODELS ************** #
+    # ************** #
+    def resolve_model(self, info, **kwargs):
+        identity = kwargs.get('id')
+
+        if identity is not None:
+            return Model.objects.get(pk=identity)
+
+        return None
+
+    def resolve_models(self, info, **kwargs):
+        return Model.objects.all()
 
     # size
     def resolve_size(self, info, **kwargs):
@@ -151,67 +139,6 @@ class Query(ObjectType):
         return ProductPrice.objects.all()
 
 
-class CategoryInput(graphene.InputObjectType):
-    id = graphene.ID()
-    name = graphene.String()
-    description = graphene.String()
-    level = graphene.Int()
-    order = graphene.Int()
-    active = graphene.Boolean()
-
-
-class CreateCategory(graphene.Mutation):
-    class Arguments:
-        input = CategoryInput(required=True)
-
-    ok = graphene.Boolean()
-    category = graphene.Field(CategoryType)
-
-    @staticmethod
-    def mutate(root, info, input=None):
-        ok = True
-
-        category_instance = Category(
-            name=input.name,
-            description=input.description,
-            order=input.order,
-            level=input.level,
-            active=True
-        )
-
-        category_instance.save()
-        return CreateCategory(ok=ok, category=category_instance)
-
-
-class UpdateCategory(graphene.Mutation):
-    class Arguments:
-        id = graphene.Int(required=True)
-        input = CategoryInput(required=True)
-
-    ok = graphene.Boolean()
-    category = graphene.Field(CategoryType)
-
-    @staticmethod
-    def mutate(root, info, id, input=None):
-        ok = False
-        category_instance = Category.objects.get(pk=id)
-
-        if category_instance:
-            ok = True
-            category_instance.name = input.name
-            category_instance.description = input.description
-            category_instance.order = input.order
-            category_instance.level = input.level
-            category_instance.active = input.active
-
-            category_instance.save()
-            return UpdateCategory(ok=ok, category=category_instance)
-        return UpdateCategory(ok=ok, category=None)
-
-
 class Mutation(graphene.ObjectType):
     create_category = CreateCategory.Field()
     update_category = UpdateCategory.Field()
-
-
-schema = graphene.Schema(query=Query, mutation=Mutation)

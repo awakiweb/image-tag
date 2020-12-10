@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'money'
 ]
 
+# Graphql Integration
 GRAPHENE = {
     'SCHEMA': 'elephantus.schema.schema'
 }
