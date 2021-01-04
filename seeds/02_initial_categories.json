@@ -3,6 +3,7 @@
     "model": "category.category",
     "pk": 1,
     "fields": {
+      "code": "MR",
       "name": "Motocicletas y Repuestos",
       "description": "",
       "level": 0,
@@ -15,6 +16,7 @@
     "model": "category.category",
     "pk": 2,
     "fields": {
+      "code": "PR",
       "name": "Productos de Ferreteria",
       "description": "",
       "level": 0,
@@ -27,6 +29,7 @@
     "model": "category.category",
     "pk": 3,
     "fields": {
+      "code": "PF",
       "name": "Productos Famaceuticos",
       "description": "",
       "level": 0,
@@ -39,6 +42,7 @@
     "model": "category.category",
     "pk": 4,
     "fields": {
+      "code": "PA",
       "name": "Productos Alimenticios",
       "description": "",
       "level": 0,
@@ -51,6 +55,7 @@
     "model": "category.category",
     "pk": 5,
     "fields": {
+      "code": "PI",
       "name": "productos Informaticos",
       "description": "",
       "level": 0,
@@ -63,6 +68,7 @@
     "model": "category.category",
     "pk": 6,
     "fields": {
+      "code": "EL",
       "name": "Electrodomesticos",
       "description": "",
       "level": 0,
@@ -75,6 +81,7 @@
     "model": "category.category",
     "pk": 6,
     "fields": {
+      "code": "VE",
       "name": "Vestimenta",
       "description": "",
       "level": 0,
@@ -87,6 +94,7 @@
     "model": "category.category",
     "pk": 7,
     "fields": {
+      "code": "ME",
       "name": "Mobiliario y Equipo de Oficina",
       "description": "",
       "level": 0,

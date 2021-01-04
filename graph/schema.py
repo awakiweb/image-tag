@@ -3,9 +3,12 @@ from graphene_django.types import ObjectType
 
 from category.models import Category
 from category.schema import CategoryType
+from category.schema import CreateCategory, UpdateCategory
 
-from product.models import Brand, Model, Size, Unit, Color, Product, ProductPrice
-from product.schema import BrandType, ModelType, SizeType, UnitType, ColorType, ProductType, ProductPriceType
+from product.models import Brand, Model, Size, Unit, Color, Product
+from product.schema import BrandType, ModelType, SizeType, UnitType, ColorType, ProductType
+from product.schema import CreateBrand, CreateModel, CreateSize, CreateUnit, CreateColor, CreateProduct
+from product.schema import UpdateBrand, UpdateModel, UpdateSize, UpdateUnit, UpdateColor, UpdateProduct
 
 
 # ************** QUERY MODELS ************** #
@@ -35,9 +38,6 @@ class Query(ObjectType):
 
     product = graphene.Field(ProductType, id=graphene.Int())
     products = graphene.List(ProductType)
-
-    productPrice = graphene.Field(ProductPriceType, id=graphene.Int())
-    productPrices = graphene.List(ProductPriceType)
 
     # ************** CATEGORIES ************** #
     # ************** #
@@ -126,19 +126,25 @@ class Query(ObjectType):
     def resolve_products(self, info, **kwargs):
         return Product.objects.all()
 
-    # product price
-    def resolve_productPrice(self, info, **kwargs):
-        identity = kwargs.get('id')
-
-        if identity is not None:
-            return ProductPrice.objects.get(pk=identity)
-
-        return None
-
-    def resolve_productPrices(self, info, **kwargs):
-        return ProductPrice.objects.all()
-
 
 class Mutation(graphene.ObjectType):
     create_category = CreateCategory.Field()
     update_category = UpdateCategory.Field()
+
+    create_brand = CreateBrand.Field()
+    update_brand = UpdateBrand.Field()
+
+    create_model = CreateModel.Field()
+    update_model = UpdateModel.Field()
+
+    create_size = CreateSize.Field()
+    update_size = UpdateSize.Field()
+
+    create_color = CreateColor.Field()
+    update_color = UpdateColor.Field()
+
+    create_unit = CreateUnit.Field()
+    update_unit = UpdateUnit.Field()
+
+    create_product = CreateProduct.Field()
+    update_product = UpdateProduct.Field()

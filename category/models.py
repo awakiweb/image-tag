@@ -4,6 +4,7 @@ from django.urls import reverse
 
 
 class Category(models.Model):
+    code = models.CharField(max_length=2)
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
 

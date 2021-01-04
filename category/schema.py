@@ -14,6 +14,7 @@ class CategoryType(DjangoObjectType):
 # ************** INPUT MUTATIONS ************** #
 # ************** #
 class CategoryInput(graphene.InputObjectType):
+    code = graphene.String(required=True)
     name = graphene.String(required=True)
     description = graphene.String()
 
@@ -33,11 +34,13 @@ class CreateCategory(graphene.Mutation):
     class Arguments:
         params = CategoryInput(required=True)
 
+    ok = graphene.Boolean()
     category = graphene.Field(CategoryType)
 
     def mutate(self, info, params):
         if params:
             category_instance = Category(
+                code=params.code,
                 name=params.name,
                 description=params.description,
                 level=params.level,
@@ -58,12 +61,14 @@ class UpdateCategory(graphene.Mutation):
         identify = graphene.ID(required=True)
         params = CategoryInput(required=True)
 
+    ok = graphene.Boolean()
     category = graphene.Field(CategoryType)
 
     def mutate(self, info, identify, params=None):
         category_instance = Category.objects.get(pk=identify)
 
         if category_instance:
+            category_instance.code = params.code if params.code else category_instance.code
             category_instance.name = params.name if params.name else category_instance.name
             category_instance.description = params.description if params.description else category_instance.description
             category_instance.level = params.level if params.level else category_instance.level
@@ -76,4 +81,3 @@ class UpdateCategory(graphene.Mutation):
             category_instance.save()
             return UpdateCategory(ok=True, category=category_instance)
         return UpdateCategory(ok=False, category=None)
-
