@@ -1,7 +1,6 @@
 aniso8601==7.0.0
 beautifulsoup4==4.9.0
 CairoSVG==2.3.0
-cffi==1.12.1
 cssselect2==0.2.1
 defusedxml==0.5.0
 Django==2.1.4
@@ -23,9 +22,7 @@ libsass==0.19.4
 Markdown==3.1.1
 numpy==1.16.0
 pandas==0.23.4
-Pillow==5.4.1
 promise==2.3
-psycopg2==2.7.6.1
 psycopg2-binary==2.8.5
 pycparser==2.19
 PyJWT==1.7.1

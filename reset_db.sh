@@ -18,3 +18,7 @@ python manage.py migrate
 
 python manage.py loaddata seeds/01_initial_superusers
 python manage.py loaddata seeds/02_initial_categories
+
+# run project
+
+python manage.py runserver

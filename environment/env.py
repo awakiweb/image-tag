@@ -12,19 +12,7 @@ dev_password = '12345'
 dev_host = 'localhost'
 dev_port = '5432'
 
-mac_password = ''
-mac_port = '5433'
-
 # profile environment
-
-mac_environment = {
-    'name': dev_database,
-    'user': dev_user,
-    'password': mac_password,
-    'host': dev_host,
-    'port': mac_port,
-    'production': False
-}
 
 dev_environment = {
     'name': dev_database,
