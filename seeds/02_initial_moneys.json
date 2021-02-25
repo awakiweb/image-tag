@@ -1,0 +1,22 @@
+[
+  {
+    "model": "money.money",
+    "pk": 1,
+    "fields": {
+      "name": "CORDOBA",
+      "symbol": "C$",
+      "principal": true,
+      "active": true
+    }
+  },
+  {
+    "model": "money.money",
+    "pk": 2,
+    "fields": {
+      "name": "DOLAR",
+      "symbol": "$",
+      "principal": false,
+      "active": true
+    }
+  }
+]

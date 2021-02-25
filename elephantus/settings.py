@@ -52,10 +52,11 @@ INSTALLED_APPS = [
     'api',
     'dashboard',
     'employee',
+    'money',
     'category',
     'product',
     'inventory',
-    'money'
+    'customer',
 ]
 
 # Graphql Integration

@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "code": "MR",
-      "name": "Motocicletas y Repuestos",
+      "name": "MOTOCICLETAS Y REPUESTOS",
       "description": "",
       "level": 0,
       "parent": null,
@@ -17,7 +17,7 @@
     "pk": 2,
     "fields": {
       "code": "PR",
-      "name": "Productos de Ferreteria",
+      "name": "PRODUCTOS DE FERRETERIA",
       "description": "",
       "level": 0,
       "parent": null,
@@ -30,7 +30,7 @@
     "pk": 3,
     "fields": {
       "code": "PF",
-      "name": "Productos Famaceuticos",
+      "name": "PRODUCTOS FARMACEUTICOS",
       "description": "",
       "level": 0,
       "parent": null,
@@ -43,7 +43,7 @@
     "pk": 4,
     "fields": {
       "code": "PA",
-      "name": "Productos Alimenticios",
+      "name": "PRODUCTOS ALIMENTICIOS",
       "description": "",
       "level": 0,
       "parent": null,
@@ -56,7 +56,7 @@
     "pk": 5,
     "fields": {
       "code": "PI",
-      "name": "productos Informaticos",
+      "name": "PRODUCTOS INFORMATICOS",
       "description": "",
       "level": 0,
       "parent": null,
@@ -69,7 +69,7 @@
     "pk": 6,
     "fields": {
       "code": "EL",
-      "name": "Electrodomesticos",
+      "name": "ELECTRODOMESTICOS",
       "description": "",
       "level": 0,
       "parent": null,
@@ -82,7 +82,7 @@
     "pk": 6,
     "fields": {
       "code": "VE",
-      "name": "Vestimenta",
+      "name": "VESTIMENTA",
       "description": "",
       "level": 0,
       "parent": null,
@@ -95,7 +95,7 @@
     "pk": 7,
     "fields": {
       "code": "ME",
-      "name": "Mobiliario y Equipo de Oficina",
+      "name": "MOBILIARIO Y EQUIPO DE OFICINA",
       "description": "",
       "level": 0,
       "parent": null,

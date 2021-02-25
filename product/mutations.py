@@ -1,41 +1,10 @@
 import graphene
 from django.db import transaction
-from graphene_django.types import DjangoObjectType
 
 from .models import Brand, Model, Size, Unit, Color, Product, ProductPrice
+from .types import BrandTypes, ModelTypes, SizeTypes, UnitTypes, ColorTypes, ProductTypes
+
 from category.models import Category
-
-
-# ************** TYPES MODELS ************** #
-# ************** #
-class BrandType(DjangoObjectType):
-    class Meta:
-        model = Brand
-
-
-class ModelType(DjangoObjectType):
-    class Meta:
-        model = Model
-
-
-class SizeType(DjangoObjectType):
-    class Meta:
-        model = Size
-
-
-class UnitType(DjangoObjectType):
-    class Meta:
-        model = Unit
-
-
-class ColorType(DjangoObjectType):
-    class Meta:
-        model = Color
-
-
-class ProductType(DjangoObjectType):
-    class Meta:
-        model = Product
 
 
 # ************** INPUT MUTATIONS ************** #
@@ -102,10 +71,19 @@ class CreateBrand(graphene.Mutation):
         params = BrandInput(required=True)
 
     ok = graphene.Boolean()
-    brand = graphene.Field(BrandType)
+    message = graphene.String()
+    brand = graphene.Field(BrandTypes)
 
     def mutate(self, info, params):
-        if params:
+        if params is None:
+            return CreateBrand(ok=False, message='Params were nos provided', brand=None)
+
+        try:
+            exists = Brand.objects.get(name=params.name)
+
+            if exists is not None:
+                return CreateBrand(ok=False, message='Name already exists', brand=None)
+        except Brand.DoesNotExist:
             brand_instance = Brand(
                 name=params.name,
                 description=params.description,
@@ -114,7 +92,6 @@ class CreateBrand(graphene.Mutation):
 
             brand_instance.save()
             return CreateBrand(ok=True, brand=brand_instance)
-        return CreateBrand(ok=False, brand=None)
 
 
 class UpdateBrand(graphene.Mutation):
@@ -123,19 +100,30 @@ class UpdateBrand(graphene.Mutation):
         params = BrandInput(required=True)
 
     ok = graphene.Boolean()
-    brand = graphene.Field(BrandType)
+    message = graphene.String()
+    brand = graphene.Field(BrandTypes)
 
     def mutate(self, info, identify, params=None):
         brand_instance = Brand.objects.get(pk=identify)
 
-        if brand_instance:
+        if brand_instance is None:
+            return UpdateBrand(ok=False, message='Brand does not exists', brand=None)
+
+        if params is None:
+            return UpdateBrand(ok=False, message='Params were not provided', brand=None)
+
+        try:
+            exists = Brand.objects.exclude(pk=identify).get(name=params.name)
+
+            if exists is not None:
+                return UpdateBrand(ok=False, message='Name already exists', brand=None)
+        except Brand.DoesNotExist:
             brand_instance.name = params.name if params.name else brand_instance.name
             brand_instance.description = params.description if params.description else brand_instance.description
             brand_instance.active = params.active if params.active else brand_instance.active
 
             brand_instance.save()
             return UpdateBrand(ok=True, brand=brand_instance)
-        return UpdateBrand(ok=False, brand=None)
 
 
 class CreateModel(graphene.Mutation):
@@ -143,7 +131,7 @@ class CreateModel(graphene.Mutation):
         params = ModelInput(required=True)
 
     ok = graphene.Boolean()
-    model = graphene.Field(ModelType)
+    model = graphene.Field(ModelTypes)
 
     def mutate(self, info, params):
         if params:
@@ -170,7 +158,7 @@ class UpdateModel(graphene.Mutation):
         params = ModelInput(required=True)
 
     ok = graphene.Boolean()
-    model = graphene.Field(ModelType)
+    model = graphene.Field(ModelTypes)
 
     def mutate(self, info, identify, params=None):
         model_instance = Model.objects.get(pk=identify)
@@ -191,7 +179,7 @@ class CreateSize(graphene.Mutation):
         params = SizeInput(required=True)
 
     ok = graphene.Boolean()
-    size = graphene.Field(SizeType)
+    size = graphene.Field(SizeTypes)
 
     def mutate(self, info, params):
         if params:
@@ -212,7 +200,7 @@ class UpdateSize(graphene.Mutation):
         params = SizeInput(required=True)
 
     ok = graphene.Boolean()
-    size = graphene.Field(SizeType)
+    size = graphene.Field(SizeTypes)
 
     def mutate(self, info, identify, params=None):
         size_instance = Size.objects.get(pk=identify)
@@ -231,7 +219,7 @@ class CreateUnit(graphene.Mutation):
         params = UnitInput(required=True)
 
     ok = graphene.Boolean()
-    unit = graphene.Field(UnitType)
+    unit = graphene.Field(UnitTypes)
 
     def mutate(self, info, params):
         if params:
@@ -253,7 +241,7 @@ class UpdateUnit(graphene.Mutation):
         params = UnitInput(required=True)
 
     ok = graphene.Boolean()
-    unit = graphene.Field(UnitType)
+    unit = graphene.Field(UnitTypes)
 
     def mutate(self, info, identify, params=None):
         unit_instance = Unit.objects.get(pk=identify)
@@ -274,7 +262,7 @@ class CreateColor(graphene.Mutation):
         params = ColorInput(required=True)
 
     ok = graphene.Boolean()
-    color = graphene.Field(ColorType)
+    color = graphene.Field(ColorTypes)
 
     def mutate(self, info, params):
         if params:
@@ -296,7 +284,7 @@ class UpdateColor(graphene.Mutation):
         params = ColorInput(required=True)
 
     ok = graphene.Boolean()
-    color = graphene.Field(ColorType)
+    color = graphene.Field(ColorTypes)
 
     def mutate(self, info, identify, params=None):
         color_instance = Color.objects.get(pk=identify)
@@ -317,7 +305,7 @@ class CreateProduct(graphene.Mutation):
         params = ProductInput(required=True)
 
     ok = graphene.Boolean()
-    product = graphene.Field(ProductType)
+    product = graphene.Field(ProductTypes)
 
     @transaction.atomic()
     def mutate(self, info, params):
@@ -396,11 +384,14 @@ class UpdateProduct(graphene.Mutation):
         params = ProductInput(required=True)
 
     ok = graphene.Boolean()
-    product = graphene.Field(ProductType)
+    product = graphene.Field(ProductTypes)
 
     @transaction.atomic()
     def mutate(self, info, identify, params=None):
         product_instance = Product.objects.get(pk=identify)
+
+        if product_instance is None:
+            return UpdateProduct(ok=False, product=None)
 
         if params is None:
             return CreateProduct(ok=False, product=None)
@@ -432,9 +423,6 @@ class UpdateProduct(graphene.Mutation):
         if category is None:
             category = product_instance.category
 
-        if product_instance is None:
-            return UpdateProduct(ok=False, product=None)
-
         product_instance.size = size
         product_instance.unit = unit
         product_instance.color = color
@@ -454,7 +442,6 @@ class UpdateProduct(graphene.Mutation):
         sale = ProductPrice.objects.get(
             product=product_instance, active=True, price_type=ProductPrice.SALE_PRICE)
 
-
         # if new purchase price is different from preview one
         # create new purchase price and made last price un active
         if purchase.price != params.purchase_price:
@@ -462,7 +449,7 @@ class UpdateProduct(graphene.Mutation):
             purchase.save()
 
             new_purchase = ProductPrice(
-                product=product_instance.id,
+                product=product_instance,
                 price_type=ProductPrice.PURCHASE_PRICE,
                 price=params.purchase_price,
                 active=True
@@ -477,7 +464,7 @@ class UpdateProduct(graphene.Mutation):
             sale.save()
 
             new_sale = ProductPrice(
-                product=product_instance.id,
+                product=product_instance,
                 price_type=ProductPrice.SALE_PRICE,
                 price=params.sale_price,
                 active=True

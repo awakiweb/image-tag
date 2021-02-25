@@ -7,5 +7,15 @@ admin.site.register(Model)
 admin.site.register(Size)
 admin.site.register(Unit)
 admin.site.register(Color)
-admin.site.register(Product)
-admin.site.register(ProductPrice)
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category', 'model', 'unit', 'size', 'color', 'active')
+    list_filter = ('category', 'model', 'unit', 'size', 'color')
+
+
+@admin.register(ProductPrice)
+class ProductPriceAdmin(admin.ModelAdmin):
+    list_display = ('product', 'price_type', 'price', 'active')
+    list_filter = ('product', 'price_type', 'active')

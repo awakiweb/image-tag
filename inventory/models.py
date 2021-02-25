@@ -28,6 +28,10 @@ class Inventory(models.Model):
     created_at = models.DateField(auto_now_add=True, null=True)
     updated_at = models.DateField(auto_now=True, null=True)
 
+    class Meta:
+        verbose_name = 'Inventory'
+        verbose_name_plural = 'Inventories'
+
     def __str__(self):
         return "{}".format(self.product.name)
 
