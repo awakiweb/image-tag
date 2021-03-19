@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import datetime
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'product',
     'inventory',
     'customer',
+    'sale'
 ]
 
 # Graphql Integration
@@ -65,6 +67,7 @@ GRAPHENE = {
 }
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -188,5 +191,19 @@ STATICFILES_FINDERS = [
 ]
 
 
-STATIC_URL = '/static/'
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+
+# Extra lookup directories for collectstatic to find static files
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
+
+#  Add configuration for static files storage using whitenoise
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+prod_db = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)

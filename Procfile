@@ -1,0 +1,1 @@
+web: gunicorn elephantus.wsgi --log-file -
