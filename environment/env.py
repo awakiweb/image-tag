@@ -1,9 +1,9 @@
 # var environment
 
-prod_database = 'd5ch7c9o8s92vp'
-prod_user = 'vwrdqwbndtkpky'
-prod_password = 'a017f48b3d1b9e581d1abc4561c703e1fe1eebbfc8a2e6904e6b0fe563e32d44'
-prod_host = 'ec2-174-129-253-125.compute-1.amazonaws.com'
+prod_database = 'd2jk06orkej8o7'
+prod_user = 'qtrtlofyxfclao'
+prod_password = '6ad640cf6ae18222e924072373f995c937d6ae49958031ce0884e322bdb5e3ba'
+prod_host = 'ec2-18-204-101-137.compute-1.amazonaws.com'
 prod_port = '5432'
 
 dev_database = 'elephantus_db'
@@ -32,4 +32,4 @@ prod_environment = {
     'production': True
 }
 
-environment = dev_environment
+environment = prod_environment
