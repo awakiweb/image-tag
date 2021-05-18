@@ -81,7 +81,7 @@ MIDDLEWARE = [
 ]
 
 # change this for production
-CORS_ORIGIN_WHITELIST = ['localhost:4200']
+CORS_ORIGIN_WHITELIST = ['localhost:4200', 'localhost:4300', 'localhost:3000']
 
 ROOT_URLCONF = 'elephantus.urls'
 
