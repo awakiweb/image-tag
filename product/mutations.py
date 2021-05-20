@@ -46,11 +46,11 @@ class ColorInput(graphene.InputObjectType):
 
 
 class ProductInput(graphene.InputObjectType):
-    size_id = graphene.Int(required=True)
-    unit_id = graphene.Int(required=True)
-    color_id = graphene.Int(required=True)
-    model_id = graphene.Int(required=True)
-    category_id = graphene.Int(required=True)
+    size = graphene.String(required=True)
+    unit = graphene.String(required=True)
+    color = graphene.String(required=True)
+    model = graphene.String(required=True)
+    category = graphene.String(required=True)
 
     name = graphene.String(required=True)
     description = graphene.String()
@@ -318,11 +318,11 @@ class CreateProduct(graphene.Mutation):
         if params.sale_price is None:
             return CreateProduct(ok=False, product=None)
 
-        size = Size.objects.get(pk=params.size_id)
-        unit = Unit.objects.get(pk=params.unit_id)
-        color = Color.objects.get(pk=params.color_id)
-        model = Model.objects.get(pk=params.model_id)
-        category = Category.objects.get(pk=params.category_id)
+        size = Size.objects.get(name=params.size)
+        unit = Unit.objects.get(name=params.unit)
+        color = Color.objects.get(name=params.color)
+        model = Model.objects.get(name=params.model)
+        category = Category.objects.get(name=params.category)
 
         if size is None:
             return CreateProduct(ok=False, product=None)
@@ -402,11 +402,11 @@ class UpdateProduct(graphene.Mutation):
         if params.sale_price is None:
             return CreateProduct(ok=False, product=None)
 
-        size = Size.objects.get(pk=params.size_id)
-        unit = Unit.objects.get(pk=params.unit_id)
-        color = Color.objects.get(pk=params.color_id)
-        model = Model.objects.get(pk=params.model_id)
-        category = Category.objects.get(pk=params.category_id)
+        size = Size.objects.get(name=params.size)
+        unit = Unit.objects.get(name=params.unit)
+        color = Color.objects.get(name=params.color)
+        model = Model.objects.get(name=params.model)
+        category = Category.objects.get(name=params.category)
 
         if size is None:
             size = product_instance.size
