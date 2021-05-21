@@ -34,12 +34,17 @@ class CreateCategory(graphene.Mutation):
         if params is None:
             return CreateCategory(ok=False, category=None)
 
+        if params.parent == 0:
+            parent = None
+        else:
+            parent = Category.objects.get(pk=params.parent)
+
         category_instance = Category(
             code=params.code,
             name=params.name,
             description=params.description,
             level=params.level,
-            parent=params.parent,
+            parent=parent,
             thumb=params.thumb,
             image=params.image,
             order=params.order,
@@ -67,11 +72,16 @@ class UpdateCategory(graphene.Mutation):
         if params is None:
             return UpdateCategory(ok=False, category=None)
 
+        if params.parent == 0:
+            parent = None
+        else:
+            parent = Category.objects.get(pk=params.parent)
+
         category_instance.code = params.code if params.code else category_instance.code
         category_instance.name = params.name if params.name else category_instance.name
         category_instance.description = params.description if params.description else category_instance.description
         category_instance.level = params.level if params.level else category_instance.level
-        category_instance.parent = params.parent if params.parent else category_instance.parent
+        category_instance.parent = parent if params.parent else category_instance.parent
         category_instance.thumb = params.thumb if params.thumb else category_instance.thumb
         category_instance.image = params.image if params.image else category_instance.image
         category_instance.order = params.order if params.order else category_instance.order
