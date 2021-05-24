@@ -167,7 +167,6 @@ class CreateSize(graphene.Mutation):
         if params:
             size_instance = Size(
                 name=params.name,
-                description=params.description,
                 active=True
             )
 
