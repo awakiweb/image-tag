@@ -1,5 +1,6 @@
 from django.db import models
 from product.models import Product
+from product_detail.models import Unit, Color
 
 
 class Store(models.Model):
@@ -18,6 +19,8 @@ class Store(models.Model):
 
 class Inventory(models.Model):
     store = models.ForeignKey(Store, related_name='inventories', on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, related_name='products', on_delete=models.CASCADE)
+    color = models.ForeignKey(Color, related_name='products', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='inventories', on_delete=models.CASCADE)
 
     available = models.FloatField()

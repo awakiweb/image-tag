@@ -1,18 +1,16 @@
 from django.contrib import admin
-from .models import Brand, Model, Size, Unit, Color, Product, ProductPrice
+from .models import Brand, Model, Size, Product, ProductPrice
 
 
 admin.site.register(Brand)
 admin.site.register(Model)
 admin.site.register(Size)
-admin.site.register(Unit)
-admin.site.register(Color)
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'model', 'unit', 'size', 'color', 'active')
-    list_filter = ('category', 'model', 'unit', 'size', 'color')
+    list_display = ('id', 'name', 'category', 'model', 'size', 'active')
+    list_filter = ('category', 'model', 'size')
 
 
 @admin.register(ProductPrice)

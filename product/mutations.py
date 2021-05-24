@@ -1,8 +1,8 @@
 import graphene
 from django.db import transaction
 
-from .models import Brand, Model, Size, Unit, Color, Product, ProductPrice
-from .types import BrandTypes, ModelTypes, SizeTypes, UnitTypes, ColorTypes, ProductTypes
+from .models import Brand, Model, Size, Product, ProductPrice
+from .types import BrandTypes, ModelTypes, SizeTypes, ProductTypes
 
 from category.models import Category
 
@@ -29,26 +29,8 @@ class SizeInput(graphene.InputObjectType):
     active = graphene.Boolean()
 
 
-class UnitInput(graphene.InputObjectType):
-    name = graphene.String(required=True)
-    symbol = graphene.String(required=True)
-    description = graphene.String()
-
-    active = graphene.Boolean()
-
-
-class ColorInput(graphene.InputObjectType):
-    code = graphene.String(required=True)
-    name = graphene.String(required=True)
-    description = graphene.String()
-
-    active = graphene.Boolean()
-
-
 class ProductInput(graphene.InputObjectType):
     size_id = graphene.Int(required=True)
-    unit_id = graphene.Int(required=True)
-    color_id = graphene.Int(required=True)
     model_id = graphene.Int(required=True)
     category_id = graphene.Int(required=True)
 
@@ -214,92 +196,6 @@ class UpdateSize(graphene.Mutation):
         return UpdateSize(ok=False, size=None)
 
 
-class CreateUnit(graphene.Mutation):
-    class Arguments:
-        params = UnitInput(required=True)
-
-    ok = graphene.Boolean()
-    unit = graphene.Field(UnitTypes)
-
-    def mutate(self, info, params):
-        if params:
-            unit_instance = Brand(
-                name=params.name,
-                symbol=params.symbol,
-                description=params.description,
-                active=True
-            )
-
-            unit_instance.save()
-            return CreateUnit(ok=True, unit=unit_instance)
-        return CreateUnit(ok=False, unit=None)
-
-
-class UpdateUnit(graphene.Mutation):
-    class Arguments:
-        identify = graphene.ID(required=True)
-        params = UnitInput(required=True)
-
-    ok = graphene.Boolean()
-    unit = graphene.Field(UnitTypes)
-
-    def mutate(self, info, identify, params=None):
-        unit_instance = Unit.objects.get(pk=identify)
-
-        if unit_instance:
-            unit_instance.name = params.name if params.name else unit_instance.name
-            unit_instance.symbol = params.symbol if params.symbol else unit_instance.symbol
-            unit_instance.description = params.description if params.description else unit_instance.description
-            unit_instance.active = params.active if params.active else unit_instance.active
-
-            unit_instance.save()
-            return UpdateUnit(ok=True, unit=unit_instance)
-        return UpdateUnit(ok=False, unit=None)
-
-
-class CreateColor(graphene.Mutation):
-    class Arguments:
-        params = ColorInput(required=True)
-
-    ok = graphene.Boolean()
-    color = graphene.Field(ColorTypes)
-
-    def mutate(self, info, params):
-        if params:
-            color_instance = Color(
-                code=params.code,
-                name=params.name,
-                description=params.description,
-                active=True
-            )
-
-            color_instance.save()
-            return CreateColor(ok=True, color=color_instance)
-        return CreateColor(ok=False, color=None)
-
-
-class UpdateColor(graphene.Mutation):
-    class Arguments:
-        identify = graphene.ID(required=True)
-        params = ColorInput(required=True)
-
-    ok = graphene.Boolean()
-    color = graphene.Field(ColorTypes)
-
-    def mutate(self, info, identify, params=None):
-        color_instance = Color.objects.get(pk=identify)
-
-        if color_instance:
-            color_instance.code = params.code if params.code else color_instance.code
-            color_instance.name = params.name if params.name else color_instance.name
-            color_instance.description = params.description if params.description else color_instance.description
-            color_instance.active = params.active if params.active else color_instance.active
-
-            color_instance.save()
-            return UpdateColor(ok=True, color=color_instance)
-        return UpdateColor(ok=False, color=None)
-
-
 class CreateProduct(graphene.Mutation):
     class Arguments:
         params = ProductInput(required=True)
@@ -319,18 +215,10 @@ class CreateProduct(graphene.Mutation):
             return CreateProduct(ok=False, product=None)
 
         size = Size.objects.get(pk=params.size_id)
-        unit = Unit.objects.get(pk=params.unit_id)
-        color = Color.objects.get(pk=params.color_id)
         model = Model.objects.get(pk=params.model_id)
         category = Category.objects.get(pk=params.category_id)
 
         if size is None:
-            return CreateProduct(ok=False, product=None)
-
-        if unit is None:
-            return CreateProduct(ok=False, product=None)
-
-        if color is None:
             return CreateProduct(ok=False, product=None)
 
         if model is None:
@@ -341,8 +229,6 @@ class CreateProduct(graphene.Mutation):
 
         product_instance = Product(
             size=size,
-            unit=unit,
-            color=color,
             model=model,
             category=category,
             name=params.name,
@@ -403,19 +289,11 @@ class UpdateProduct(graphene.Mutation):
             return CreateProduct(ok=False, product=None)
 
         size = Size.objects.get(pk=params.size_id)
-        unit = Unit.objects.get(pk=params.unit_id)
-        color = Color.objects.get(pk=params.color_id)
         model = Model.objects.get(pk=params.model_id)
         category = Category.objects.get(pk=params.category_id)
 
         if size is None:
             size = product_instance.size
-
-        if unit is None:
-            unit = product_instance.unit
-
-        if color is None:
-            color = product_instance.color
 
         if model is None:
             model = product_instance.model
@@ -424,8 +302,6 @@ class UpdateProduct(graphene.Mutation):
             category = product_instance.category
 
         product_instance.size = size
-        product_instance.unit = unit
-        product_instance.color = color
         product_instance.model = model
         product_instance.category = category
         product_instance.name = params.name if params.name else product_instance.name

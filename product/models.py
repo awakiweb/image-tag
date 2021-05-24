@@ -39,38 +39,8 @@ class Size(models.Model):
         return "{}".format(self.name)
 
 
-class Unit(models.Model):
-    name = models.CharField(max_length=150)
-    symbol = models.CharField(max_length=10)
-    description = models.TextField(blank=True, null=True)
-
-    active = models.BooleanField(default=True)
-
-    created_at = models.DateField(auto_now_add=True, null=True)
-    updated_at = models.DateField(auto_now=True, null=True)
-
-    def __str__(self):
-        return "{}".format(self.name)
-
-
-class Color(models.Model):
-    code = models.CharField(max_length=10)
-    name = models.CharField(max_length=150)
-    description = models.TextField(blank=True, null=True)
-
-    active = models.BooleanField(default=True)
-
-    created_at = models.DateField(auto_now_add=True, null=True)
-    updated_at = models.DateField(auto_now=True, null=True)
-
-    def __str__(self):
-        return "{}".format(self.name)
-
-
 class Product(models.Model):
     size = models.ForeignKey(Size, related_name='products', on_delete=models.CASCADE)
-    unit = models.ForeignKey(Unit, related_name='products', on_delete=models.CASCADE)
-    color = models.ForeignKey(Color, related_name='products', on_delete=models.CASCADE)
     model = models.ForeignKey(Model, related_name='products', on_delete=models.CASCADE)
     category = models.ForeignKey('category.Category', related_name='products', on_delete=models.CASCADE)
 

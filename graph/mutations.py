@@ -2,8 +2,11 @@ import graphene
 
 from category.mutations import CreateCategory, UpdateCategory
 
-from product.mutations import CreateBrand, CreateModel, CreateSize, CreateUnit, CreateColor, CreateProduct
-from product.mutations import UpdateBrand, UpdateModel, UpdateSize, UpdateUnit, UpdateColor, UpdateProduct
+from product.mutations import CreateBrand, CreateModel, CreateSize, CreateProduct
+from product.mutations import UpdateBrand, UpdateModel, UpdateSize, UpdateProduct
+
+from product_detail.mutations import CreateUnit, CreateColor
+from product_detail.mutations import UpdateUnit, UpdateColor
 
 from inventory.mutations import CreateStore, CreateInventory, CreateMovementType, CreateMovement
 from inventory.mutations import UpdateStore, UpdateInventory, UpdateMovementType, UpdateMovement
@@ -27,14 +30,14 @@ class Mutation(graphene.ObjectType):
     create_size = CreateSize.Field()
     update_size = UpdateSize.Field()
 
+    create_product = CreateProduct.Field()
+    update_product = UpdateProduct.Field()
+
     create_color = CreateColor.Field()
     update_color = UpdateColor.Field()
 
     create_unit = CreateUnit.Field()
     update_unit = UpdateUnit.Field()
-
-    create_product = CreateProduct.Field()
-    update_product = UpdateProduct.Field()
 
     create_store = CreateStore.Field()
     update_store = UpdateStore.Field()
@@ -50,4 +53,3 @@ class Mutation(graphene.ObjectType):
 
     create_customer = CreateCustomer.Field()
     update_customer = UpdateCustomer.Field()
-

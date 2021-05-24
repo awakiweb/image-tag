@@ -4,8 +4,11 @@ from graphene_django.types import ObjectType
 from category.models import Category
 from category.types import CategoryTypes
 
-from product.models import Brand, Model, Size, Unit, Color, Product
-from product.types import BrandTypes, ModelTypes, SizeTypes, UnitTypes, ColorTypes, ProductTypes
+from product.models import Brand, Model, Size, Product
+from product.types import BrandTypes, ModelTypes, SizeTypes, ProductTypes
+
+from product_detail.models import Unit, Color
+from product_detail.types import UnitTypes, ColorTypes
 
 from inventory.models import Store, Inventory, MovementType, Movement
 from inventory.types import StoreTypes, InventoryTypes, MovementTypeTypes, MovementTypes
@@ -33,14 +36,16 @@ class Query(ObjectType):
     size = graphene.Field(SizeTypes, id=graphene.Int())
     sizes = graphene.List(SizeTypes)
 
+    product = graphene.Field(ProductTypes, id=graphene.Int())
+    products = graphene.List(ProductTypes)
+
+    # ************** PRODUCT DETAILS ************** #
+    # ************** #
     unit = graphene.Field(UnitTypes, id=graphene.Int())
     units = graphene.List(UnitTypes)
 
     color = graphene.Field(ColorTypes, id=graphene.Int())
     colors = graphene.List(ColorTypes)
-
-    product = graphene.Field(ProductTypes, id=graphene.Int())
-    products = graphene.List(ProductTypes)
 
     # ************** INVENTORIES ************** #
     # ************** #
@@ -113,6 +118,19 @@ class Query(ObjectType):
     def resolve_sizes(self, info, **kwargs):
         return Size.objects.all()
 
+    # ************** PRODUCTS ************** #
+    # ************** #
+    def resolve_product(self, info, **kwargs):
+        identity = kwargs.get('id')
+
+        if identity is not None:
+            return Product.objects.get(pk=identity)
+
+        return None
+
+    def resolve_products(self, info, **kwargs):
+        return Product.objects.all()
+
     # ************** UNITS ************** #
     # ************** #
     def resolve_unit(self, info, **kwargs):
@@ -138,19 +156,6 @@ class Query(ObjectType):
 
     def resolve_colors(self, info, **kwargs):
         return Color.objects.all()
-
-    # ************** PRODUCTS ************** #
-    # ************** #
-    def resolve_product(self, info, **kwargs):
-        identity = kwargs.get('id')
-
-        if identity is not None:
-            return Product.objects.get(pk=identity)
-
-        return None
-
-    def resolve_products(self, info, **kwargs):
-        return Product.objects.all()
 
     # ************** STORES ************** #
     # ************** #

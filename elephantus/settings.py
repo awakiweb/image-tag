@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'money',
     'category',
     'product',
+    'product_detail',
     'inventory',
     'customer',
     'sale'

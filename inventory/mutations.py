@@ -4,6 +4,7 @@ from .models import Store, Inventory, MovementType, Movement
 from .types import StoreTypes, InventoryTypes, MovementTypeTypes, MovementTypes
 
 from product.models import Product
+from product_detail.models import Unit, Color
 
 
 # ************** INPUT MUTATIONS ************** #
@@ -97,9 +98,17 @@ class CreateInventory(graphene.Mutation):
             return CreateInventory(ok=False, inventory=None)
 
         store = Store.objects.get(pk=params.store_id)
+        unit = Unit.objects.get(pk=params.unit_id)
+        color = Color.objects.get(pk=params.color_id)
         product = Product.objects.get(pk=params.product_id)
 
         if store is None:
+            return CreateInventory(ok=False, inventory=None)
+
+        if unit is None:
+            return CreateInventory(ok=False, inventory=None)
+
+        if color is None:
             return CreateInventory(ok=False, inventory=None)
 
         if product is None:
@@ -107,6 +116,8 @@ class CreateInventory(graphene.Mutation):
 
         inventory_instance = Inventory(
             store=store,
+            unit=unit,
+            color=color,
             product=product,
             available=params.available,
             stock=params.stock,
@@ -135,15 +146,25 @@ class UpdateInventory(graphene.Mutation):
             return UpdateInventory(ok=False, inventory=None)
 
         store = Store.objects.get(pk=params.store_id)
+        unit = Unit.objects.get(pk=params.unit_id)
+        color = Color.objects.get(pk=params.color_id)
         product = Product.objects.get(pk=params.product_id)
 
         if store is None:
             store = inventory_instance.store
 
+        if unit is None:
+            unit = inventory_instance.unit
+
+        if color is None:
+            color = inventory_instance.color
+
         if product is None:
             product = inventory_instance.product
 
         inventory_instance.store = store
+        inventory_instance.unit = unit
+        inventory_instance.color = color
         inventory_instance.product = product
         inventory_instance.available = params.available if params.available else inventory_instance.available
         inventory_instance.stock = params.stock if params.stock else inventory_instance.stock
