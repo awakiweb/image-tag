@@ -1,4 +1,5 @@
 import graphene
+from django.db import transaction
 
 from .models import Store, Inventory, MovementType, Movement
 from .types import StoreTypes, InventoryTypes, MovementTypeTypes, MovementTypes
@@ -250,6 +251,7 @@ class CreateMovement(graphene.Mutation):
     message = graphene.String()
     movement = graphene.Field(MovementTypes)
 
+    @transaction.atomic()
     def mutate(self, info, params):
         if params is None:
             return CreateMovement(ok=False, message='Params were not provided', movement=None)
@@ -273,6 +275,18 @@ class CreateMovement(graphene.Mutation):
         )
 
         movement_instance.save()
+
+        # update inventory
+        if movement_type == MovementType.ENTRY:
+            inventory.stock = inventory.stock + params.quantity
+            inventory.available = inventory.available + params.quantity
+
+        if movement_type == MovementType.DEPARTURE:
+            inventory.stock = inventory.stock - params.quantity
+            inventory.available = inventory.available - params.quantity
+
+        inventory.save()
+
         return CreateStore(ok=True, movement=movement_instance)
 
 
