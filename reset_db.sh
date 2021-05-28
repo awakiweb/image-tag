@@ -14,8 +14,10 @@ python manage.py makemigrations employee
 python manage.py makemigrations money
 python manage.py makemigrations category
 python manage.py makemigrations product
+python manage.py makemigrations product_detail
 python manage.py makemigrations inventory
 python manage.py makemigrations customer
+python manage.py makemigrations sale
 python manage.py migrate
 
 # run seeds

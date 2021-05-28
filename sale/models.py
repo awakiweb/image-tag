@@ -2,12 +2,12 @@ from django.db import models
 
 from money.models import Money
 from customer.models import Customer
-from product.models import ProductPrice
+from product.models import Product
 
 
 class Sale(models.Model):
     money = models.ForeignKey(Money, related_name='sales', on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, related_name='sales', on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, related_name='sales', null=True, blank=True, on_delete=models.CASCADE)
 
     CREDIT = 'CR'
     CASH = 'CO'
@@ -27,8 +27,9 @@ class Sale(models.Model):
 
 class SaleDetail(models.Model):
     sale = models.ForeignKey(Sale, related_name='sale_details', on_delete=models.CASCADE)
-    product_price = models.ForeignKey(ProductPrice, related_name='sale_details', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='sale_details', on_delete=models.CASCADE)
 
+    price = models.FloatField()
     quantity = models.FloatField()
     active = models.BooleanField(default=True)
 
