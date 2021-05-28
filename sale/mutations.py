@@ -10,7 +10,7 @@ from customer.models import Customer
 
 # ************** INPUT MUTATIONS ************** #
 # ************** #
-class SaleInput(graphene):
+class SaleInput(graphene.InputObjectType):
     money_id = graphene.Int(required=True)
     customer_id = graphene.Int(required=True)
 
@@ -19,7 +19,7 @@ class SaleInput(graphene):
     status = graphene.Int(required=True)
 
 
-class SaleDetailInput(graphene):
+class SaleDetailInput(graphene.InputObjectType):
     sale_id = graphene.Int(required=True)
     product_id = graphene.Int(required=True)
 
@@ -28,7 +28,7 @@ class SaleDetailInput(graphene):
     active = graphene.Boolean(required=True)
 
 
-class InvoiceInput(graphene):
+class InvoiceInput(graphene.InputObjectType):
     sale_id = graphene.Int(required=True)
     money_id = graphene.Int(required=True)
 
