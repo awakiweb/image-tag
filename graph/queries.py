@@ -16,6 +16,9 @@ from inventory.types import StoreTypes, InventoryTypes, MovementTypeTypes, Movem
 from customer.models import Customer
 from customer.types import CustomerTypes
 
+from sale.models import Sale, SaleDetail, Invoice
+from sale.types import SaleTypes, SaleDetailTypes, InvoiceTypes
+
 
 # ************** QUERY MODELS ************** #
 # ************** #
@@ -65,6 +68,17 @@ class Query(ObjectType):
     # ************** #
     customer = graphene.Field(CustomerTypes, id=graphene.Int())
     customers = graphene.List(CustomerTypes)
+
+    # ************** SALES ************** #
+    # ************** #
+    sale = graphene.Field(SaleTypes, id=graphene.Int())
+    sales = graphene.List(SaleTypes)
+
+    sale_detail = graphene.Field(SaleDetailTypes, id=graphene.Int())
+    sale_details = graphene.List(SaleDetailTypes)
+
+    invoice = graphene.Field(InvoiceTypes, id=graphene.Int())
+    invoices = graphene.List(InvoiceTypes)
 
     # ************** CATEGORIES ************** #
     # ************** #
@@ -221,3 +235,38 @@ class Query(ObjectType):
 
     def resolve_customers(self, info, **kwargs):
         return Customer.objects.all()
+
+    # ************** SALES ************** #
+    # ************** #
+    def resolve_sale(self, info, **kwargs):
+        identity = kwargs.get('id')
+
+        if identity is not None:
+            return Sale.objects.get(pk=identity)
+
+        return None
+
+    def resolve_sales(self, info, **kwargs):
+        return Sale.objects.all()
+
+    def resolve_sale_detail(self, info, **kwargs):
+        identity = kwargs.get('id')
+
+        if identity is not None:
+            return SaleDetail.objects.get(pk=identity)
+
+        return None
+
+    def resolve_sale_details(self, info, **kwargs):
+        return SaleDetail.objects.all()
+
+    def resolve_invoice(self, info, **kwargs):
+        identity = kwargs.get('id')
+
+        if identity is not None:
+            return Invoice.objects.get(pk=identity)
+
+        return None
+
+    def resolve_invoices(self, info, **kwargs):
+        return Invoice.objects.all()

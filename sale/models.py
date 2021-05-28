@@ -52,6 +52,7 @@ class Invoice(models.Model):
     type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=CASH)
     amount = models.FloatField()
 
+    invoice_date = models.DateField()
     status = models.IntegerField()
 
     created_at = models.DateField(auto_now_add=True, null=True)

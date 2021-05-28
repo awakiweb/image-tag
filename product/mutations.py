@@ -58,7 +58,7 @@ class CreateBrand(graphene.Mutation):
 
     def mutate(self, info, params):
         if params is None:
-            return CreateBrand(ok=False, message='Params were nos provided', brand=None)
+            return CreateBrand(ok=False, message='Params were not provided', brand=None)
 
         try:
             exists = Brand.objects.get(name=params.name)
