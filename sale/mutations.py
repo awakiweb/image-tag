@@ -4,8 +4,8 @@ from .models import Sale, SaleDetail, Invoice
 from .types import SaleTypes, SaleDetailTypes, InvoiceTypes
 
 from money.models import Money
-from product.models import Product
 from customer.models import Customer
+from inventory.models import Inventory
 
 
 # ************** INPUT MUTATIONS ************** #
@@ -21,7 +21,7 @@ class SaleInput(graphene.InputObjectType):
 
 class SaleDetailInput(graphene.InputObjectType):
     sale_id = graphene.Int(required=True)
-    product_id = graphene.Int(required=True)
+    inventory_id = graphene.Int(required=True)
 
     price = graphene.Float(required=True)
     quantity = graphene.Float(required=True)
@@ -84,17 +84,17 @@ class CreateSaleDetail(graphene.Mutation):
             return CreateSaleDetail(ok=False, message='Params were not provided', sale_detail=None)
 
         sale = Sale.objects.get(pk=params.sale_id)
-        product = Product.objects.get(pk=params.product_id)
+        inventory = Inventory.objects.get(pk=params.inventory_id)
 
         if sale is None:
             return CreateSaleDetail(ok=False, message='Sale was not provided', sale_detail=None)
 
-        if product is None:
+        if inventory is None:
             return CreateSaleDetail(ok=False, message='Product was not provided', sale_detail=None)
 
         sale_detail_instance = SaleDetail(
             sale=sale,
-            product=product,
+            inventory=inventory,
             price=params.price,
             quantity=params.quantity,
             active=params.active

@@ -2,7 +2,7 @@ from django.db import models
 
 from money.models import Money
 from customer.models import Customer
-from product.models import Product
+from inventory.models import Inventory
 
 
 class Sale(models.Model):
@@ -27,7 +27,7 @@ class Sale(models.Model):
 
 class SaleDetail(models.Model):
     sale = models.ForeignKey(Sale, related_name='sale_details', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='sale_details', on_delete=models.CASCADE)
+    inventory = models.ForeignKey(Inventory, related_name='sale_details', on_delete=models.CASCADE)
 
     price = models.FloatField()
     quantity = models.FloatField()
