@@ -1,6 +1,9 @@
 import graphene
 from graphene_django.types import ObjectType
 
+from money.models import Money, ExchangeRate
+from money.types import MoneyTypes, ExchangeRateTypes
+
 from category.models import Category
 from category.types import CategoryTypes
 
@@ -23,6 +26,14 @@ from sale.types import SaleTypes, SaleDetailTypes, InvoiceTypes
 # ************** QUERY MODELS ************** #
 # ************** #
 class Query(ObjectType):
+    # ************** MONEYS ************** #
+    # ************** #
+    money = graphene.Field(MoneyTypes, id=graphene.Int())
+    moneys = graphene.List(MoneyTypes)
+
+    exchange_rate = graphene.Field(ExchangeRateTypes, id=graphene.Int())
+    exchange_rates = graphene.List(ExchangeRateTypes)
+
     # ************** CATEGORIES ************** #
     # ************** #
     category = graphene.Field(CategoryTypes, id=graphene.Int())
@@ -79,6 +90,30 @@ class Query(ObjectType):
 
     invoice = graphene.Field(InvoiceTypes, id=graphene.Int())
     invoices = graphene.List(InvoiceTypes)
+
+    # ************** MONEYS ************** #
+    # ************** #
+    def resolve_money(self, info, **kwargs):
+        identity = kwargs.get('id')
+
+        if identity is not None:
+            return Money.objects.get(pk=identity)
+
+        return None
+
+    def resolve_moneys(self, info, **kwargs):
+        return Money.objects.all()
+
+    def resolve_exchange_rate(self, info, **kwargs):
+        identity = kwargs.get('id')
+
+        if identity is not None:
+            return ExchangeRate.objects.get(pk=identity)
+
+        return None
+
+    def resolve_exchange_rates(self, info, **kwargs):
+        return ExchangeRate.objects.all()
 
     # ************** CATEGORIES ************** #
     # ************** #
