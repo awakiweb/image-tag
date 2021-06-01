@@ -58,6 +58,12 @@ class Product(models.Model):
     def __str__(self):
         return "{}".format(self.name)
 
+    def get_purchase_price(self):
+        return self.product_prices.get(price_type=ProductPrice.PURCHASE_PRICE, active=True).price
+
+    def get_sale_price(self):
+        return self.product_prices.get(price_type=ProductPrice.SALE_PRICE, active=True).price
+
 
 class ProductPrice(models.Model):
     product = models.ForeignKey(Product, related_name='product_prices', on_delete=models.CASCADE)
