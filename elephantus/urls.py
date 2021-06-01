@@ -19,6 +19,9 @@ from django.conf.urls import include
 from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
@@ -30,4 +33,4 @@ urlpatterns = [
     path('products/', include('product.urls')),
     path('product_details/', include('product_detail.urls')),
     path('inventories/', include('inventory.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
