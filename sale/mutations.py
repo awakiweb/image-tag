@@ -27,7 +27,7 @@ class SaleInput(graphene.InputObjectType):
     sale_date = graphene.DateTime(required=True)
     status = graphene.Int(required=True)
 
-    sale_details = graphene.Field(SaleDetailInput)
+    sale_details = graphene.List(SaleDetailInput)
 
 
 class InvoiceInput(graphene.InputObjectType):
