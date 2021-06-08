@@ -10,6 +10,15 @@ from inventory.models import Inventory
 
 # ************** INPUT MUTATIONS ************** #
 # ************** #
+class SaleDetailInput(graphene.InputObjectType):
+    sale_id = graphene.Int(required=True)
+    inventory_id = graphene.Int(required=True)
+
+    price = graphene.Float(required=True)
+    quantity = graphene.Float(required=True)
+    active = graphene.Boolean(required=True)
+
+
 class SaleInput(graphene.InputObjectType):
     money_id = graphene.Int(required=True)
     customer_id = graphene.Int(required=True)
@@ -18,14 +27,7 @@ class SaleInput(graphene.InputObjectType):
     sale_date = graphene.DateTime(required=True)
     status = graphene.Int(required=True)
 
-
-class SaleDetailInput(graphene.InputObjectType):
-    sale_id = graphene.Int(required=True)
-    inventory_id = graphene.Int(required=True)
-
-    price = graphene.Float(required=True)
-    quantity = graphene.Float(required=True)
-    active = graphene.Boolean(required=True)
+    sale_details = graphene.Field(SaleDetailInput)
 
 
 class InvoiceInput(graphene.InputObjectType):
@@ -68,6 +70,26 @@ class CreateSale(graphene.Mutation):
         )
 
         sale_instance.save()
+
+        # save details
+        if params.sale_details is None:
+            return CreateSale(ok=True, message='Sale Saved Correctly', sale=sale_instance)
+
+        for sale_detail in params.sale_details:
+            inventory = Inventory.objects.get(pk=sale_detail.inventory_id)
+
+            # if inventory exists, add new sale detail
+            if inventory is not None:
+                new_sale_detail = SaleDetail(
+                    sale=sale_instance,
+                    inventory=inventory,
+                    price=params.price,
+                    quantity=params.quantity,
+                    active=params.active
+                )
+
+                new_sale_detail.save()
+
         return CreateSale(ok=True, message='Sale Saved Correctly', sale=sale_instance)
 
 
