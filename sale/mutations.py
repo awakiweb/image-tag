@@ -83,9 +83,9 @@ class CreateSale(graphene.Mutation):
                 new_sale_detail = SaleDetail(
                     sale=sale_instance,
                     inventory=inventory,
-                    price=params.price,
-                    quantity=params.quantity,
-                    active=params.active
+                    price=sale_detail.price,
+                    quantity=sale_detail.quantity,
+                    active=sale_detail.active
                 )
 
                 new_sale_detail.save()
