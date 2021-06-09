@@ -93,39 +93,6 @@ class CreateSale(graphene.Mutation):
         return CreateSale(ok=True, message='Sale Saved Correctly', sale=sale_instance)
 
 
-class CreateSaleDetail(graphene.Mutation):
-    class Arguments:
-        params = SaleDetailInput(required=True)
-
-    ok = graphene.Boolean()
-    message = graphene.String()
-    sale_detail = graphene.Field(SaleDetailTypes)
-
-    def mutate(self, info, params):
-        if params is None:
-            return CreateSaleDetail(ok=False, message='Params were not provided', sale_detail=None)
-
-        sale = Sale.objects.get(pk=params.sale_id)
-        inventory = Inventory.objects.get(pk=params.inventory_id)
-
-        if sale is None:
-            return CreateSaleDetail(ok=False, message='Sale was not provided', sale_detail=None)
-
-        if inventory is None:
-            return CreateSaleDetail(ok=False, message='Product was not provided', sale_detail=None)
-
-        sale_detail_instance = SaleDetail(
-            sale=sale,
-            inventory=inventory,
-            price=params.price,
-            quantity=params.quantity,
-            active=params.active
-        )
-
-        sale_detail_instance.save()
-        return CreateSaleDetail(ok=True, message='Sale Detail Saved Correctly', sale_detail=sale_detail_instance)
-
-
 class CreateInvoice(graphene.Mutation):
     class Arguments:
         params = InvoiceInput(required=True)
@@ -158,3 +125,50 @@ class CreateInvoice(graphene.Mutation):
 
         invoice_instance.save()
         return CreateInvoice(ok=True, message='Sale Saved Correctly', invoice=invoice_instance)
+
+
+class UpdateSaleDetail(graphene.Mutation):
+    class Arguments:
+        params = graphene.List(SaleDetailInput)
+
+    ok = graphene.Boolean()
+    message = graphene.String()
+    sale_detail = graphene.List(SaleDetailTypes)
+
+    def mutate(self, info, params):
+        if params is None:
+            return UpdateSaleDetail(ok=False, message='Params were not provided', sale_detail=None)
+
+        new_sale_detail = []
+        for param in params:
+            # if sale_detail_id equals 0: create sale_detail
+            try:
+                sale_detail = SaleDetail.objects.get(sale_id=param.sale_id, inventory_id=param.inventory_id)
+
+                sale_detail.price = param.price
+                sale_detail.quantity = param.quantity
+                sale_detail.active = param.active
+
+                sale_detail.save()
+                new_sale_detail.append(sale_detail)
+            except SaleDetail.DoesNotExist:
+                sale = Sale.objects.get(pk=param.sale_id)
+                inventory = Inventory.objects.get(pk=param.inventory_id)
+
+                if sale is None:
+                    return UpdateSaleDetail(ok=False, message='Sale was not provided', sale_detail=None)
+
+                if inventory is None:
+                    return UpdateSaleDetail(ok=False, message='Product was not provided', sale_detail=None)
+
+                sale_detail_instance = SaleDetail(
+                    sale=sale,
+                    inventory=inventory,
+                    price=param.price,
+                    quantity=param.quantity,
+                    active=param.active
+                )
+
+                sale_detail_instance.save()
+                new_sale_detail.append(sale_detail_instance)
+        return UpdateSaleDetail(ok=True, message='Sale Detail Saved Correctly', sale_detail=new_sale_detail)
