@@ -21,7 +21,7 @@ class SaleDetailInput(graphene.InputObjectType):
 
 class SaleInput(graphene.InputObjectType):
     money_id = graphene.Int(required=True)
-    customer_id = graphene.Int(required=True)
+    customer_id = graphene.Int()
 
     type = graphene.String(required=True)
     sale_date = graphene.DateTime(required=True)
@@ -125,6 +125,38 @@ class CreateInvoice(graphene.Mutation):
 
         invoice_instance.save()
         return CreateInvoice(ok=True, message='Sale Saved Correctly', invoice=invoice_instance)
+
+
+class UpdateSale(graphene.Mutation):
+    class Arguments:
+        identify = graphene.ID(required=True)
+        params = SaleInput(required=True)
+
+    ok = graphene.Boolean()
+    message = graphene.String()
+    sale_detail = graphene.Field(SaleTypes)
+
+    def mutate(self, info, identify, params=None):
+        sale_instance = Sale.objects.get(pk=identify)
+
+        if params is None:
+            return UpdateSale(ok=False, message='Params were not provided', sale=None)
+
+        money = Money.objects.get(pk=params.money_id)
+        customer = Customer.objects.get(pk=params.customer_id) if params.customer_id != 0 else None
+
+        if money is None:
+            return CreateSale(ok=False, message='Money was not provided', sale=None)
+
+        sale_instance.money = money
+        sale_instance.customer = customer
+        sale_instance.type = params.type if params.type else sale_instance.type
+        sale_instance.status = params.status if params.status else sale_instance.status
+        sale_instance.sale_date = params.sale_date if params.sale_date else sale_instance.sale_date
+
+        sale_instance.save()
+
+        return UpdateSale(ok=True, message='Sale Saved Correctly', sale=sale_instance)
 
 
 class UpdateSaleDetail(graphene.Mutation):
