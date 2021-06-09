@@ -13,7 +13,7 @@ from inventory.mutations import UpdateStore, UpdateInventory, UpdateMovementType
 
 from customer.mutations import CreateCustomer, UpdateCustomer
 
-from sale.mutations import CreateSale, UpdateSaleDetail, CreateInvoice
+from sale.mutations import CreateSale, CreateInvoice, UpdateSale, UpdateSaleDetail
 
 
 # ************** MUTATIONS ************** #
@@ -57,6 +57,8 @@ class Mutation(graphene.ObjectType):
     update_customer = UpdateCustomer.Field()
 
     create_sale = CreateSale.Field()
-    create_sale_detail = UpdateSaleDetail.Field()
+    update_sale = UpdateSale.Field()
+
     create_invoice = CreateInvoice.Field()
+    update_sale_detail = UpdateSaleDetail.Field()
 
