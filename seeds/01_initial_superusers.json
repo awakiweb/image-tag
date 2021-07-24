@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "username": "admin",
-      "password": "pbkdf2_sha256$120000$hREmdvsE3gb7$I02D/fTk7PpLbs4tQdxLqNrUhrJgneo9x4tdKkZyH/Q=",
+      "password": "pbkdf2_sha256$120000$ZBaynuRkjV9T$f81qxJNrRyPYSeEWeX/ldh883CfUjHzvrgQqUo802aA=",
       "first_name": "admin",
       "last_name": "admin",
       "email": "admin@admin.com",
@@ -18,24 +18,10 @@
     "pk": 2,
     "fields": {
       "username": "test",
-      "password": "pbkdf2_sha256$120000$rSTnS1gD008N$ImbmmRIQC5muSvfaI274IwW3S+qrZovu/9YqJxo+CrU=",
+      "password": "pbkdf2_sha256$120000$ZBaynuRkjV9T$f81qxJNrRyPYSeEWeX/ldh883CfUjHzvrgQqUo802aA=",
       "first_name": "test",
       "last_name": "test",
       "email": "test@test.com",
-      "is_superuser": true,
-      "is_staff": true,
-      "is_active": true
-    }
-  },
-  {
-    "model": "auth.user",
-    "pk": 3,
-    "fields": {
-      "username": "manu24",
-      "password": "pbkdf2_sha256$120000$qx69vcc69SMt$EgXvk/5weuOQA5D01DBsoWIhd2UtiFzdr5Q8wP5HNx8=",
-      "first_name": "Manuel",
-      "last_name": "Perez",
-      "email": "manuelpc2495@gmail.com",
       "is_superuser": true,
       "is_staff": true,
       "is_active": true

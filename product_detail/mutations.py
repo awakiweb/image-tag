@@ -1,4 +1,5 @@
 import graphene
+from graphql_jwt.decorators import login_required
 
 from .models import Unit, Color
 from .types import UnitTypes, ColorTypes
@@ -31,6 +32,7 @@ class CreateUnit(graphene.Mutation):
     ok = graphene.Boolean()
     unit = graphene.Field(UnitTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params:
             unit_instance = Unit(
@@ -53,6 +55,7 @@ class UpdateUnit(graphene.Mutation):
     ok = graphene.Boolean()
     unit = graphene.Field(UnitTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         unit_instance = Unit.objects.get(pk=identify)
 
@@ -74,6 +77,7 @@ class CreateColor(graphene.Mutation):
     ok = graphene.Boolean()
     color = graphene.Field(ColorTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params:
             color_instance = Color(
@@ -96,6 +100,7 @@ class UpdateColor(graphene.Mutation):
     ok = graphene.Boolean()
     color = graphene.Field(ColorTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         color_instance = Color.objects.get(pk=identify)
 
@@ -108,4 +113,3 @@ class UpdateColor(graphene.Mutation):
             color_instance.save()
             return UpdateColor(ok=True, color=color_instance)
         return UpdateColor(ok=False, color=None)
-

@@ -45,13 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
     'corsheaders',
     'bootstrap4',
     'crispy_forms',
 
     'graph',
-    'api',
     'dashboard',
     'employee',
     'money',
@@ -65,7 +63,10 @@ INSTALLED_APPS = [
 
 # Graphql Integration
 GRAPHENE = {
-    'SCHEMA': 'elephantus.schema.schema'
+    'SCHEMA': 'elephantus.schema.schema',
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
 }
 
 MIDDLEWARE = [
@@ -81,8 +82,26 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
+GRAPHQL_JWT = {
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=10),
+}
+
+
 # change this for production
-CORS_ORIGIN_WHITELIST = ['localhost:4200', 'localhost:4300', 'localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:4200', 'http://localhost:4300', 'http://localhost:3000']
+
+
+# default auto field id
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 ROOT_URLCONF = 'elephantus.urls'
 
@@ -145,28 +164,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # crispy form
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-
-# REST FRAMEWORK CONFIGURATION
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    ),
-}
-
-
-# WJT TOKEN CONFIGURATION
-
-JWT_AUTH = {
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=15000),
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-
-    'JWT_PAYLOAD_HANDLER': 'api.jwt.jwt_payload_handler',
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.jwt.jwt_response_payload_handler',
-}
 
 
 # Internationalization

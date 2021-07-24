@@ -1,7 +1,7 @@
 ### super users credentials
 
-## admin: admin123
-## test: test123
+## admin: 65CJHJGFZzTmGq6
+## test: 65CJHJGFZzTmGq6
 
 # delete migrations
 

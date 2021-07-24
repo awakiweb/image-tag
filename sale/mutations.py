@@ -1,4 +1,5 @@
 import graphene
+from graphql_jwt.decorators import login_required
 
 from .models import Sale, SaleDetail, Invoice
 from .types import SaleTypes, SaleDetailTypes, InvoiceTypes
@@ -51,6 +52,7 @@ class CreateSale(graphene.Mutation):
     message = graphene.String()
     sale = graphene.Field(SaleTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return CreateSale(ok=False, message='Params were not provided', sale=None)
@@ -101,6 +103,7 @@ class CreateInvoice(graphene.Mutation):
     message = graphene.String()
     invoice = graphene.Field(InvoiceTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return CreateInvoice(ok=False, message='Params were not provided', invoice=None)
@@ -136,6 +139,7 @@ class UpdateSale(graphene.Mutation):
     message = graphene.String()
     sale_detail = graphene.Field(SaleTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         sale_instance = Sale.objects.get(pk=identify)
 
@@ -167,6 +171,7 @@ class UpdateSaleDetail(graphene.Mutation):
     message = graphene.String()
     sale_detail = graphene.List(SaleDetailTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return UpdateSaleDetail(ok=False, message='Params were not provided', sale_detail=None)

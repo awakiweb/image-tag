@@ -1,5 +1,6 @@
 import graphene
 from django.db import transaction
+from graphql_jwt.decorators import login_required
 
 from .models import Store, Inventory, MovementType, Movement
 from .types import StoreTypes, InventoryTypes, MovementTypeTypes, MovementTypes
@@ -51,6 +52,7 @@ class CreateStore(graphene.Mutation):
     ok = graphene.Boolean()
     store = graphene.Field(StoreTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params:
             store_instance = Store(
@@ -73,6 +75,7 @@ class UpdateStore(graphene.Mutation):
     ok = graphene.Boolean()
     store = graphene.Field(StoreTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         store_instance = Store.objects.get(pk=identify)
 
@@ -94,6 +97,7 @@ class CreateInventory(graphene.Mutation):
     ok = graphene.Boolean()
     inventory = graphene.Field(InventoryTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return CreateInventory(ok=False, inventory=None)
@@ -137,6 +141,7 @@ class UpdateInventory(graphene.Mutation):
     ok = graphene.Boolean()
     inventory = graphene.Field(InventoryTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         inventory_instance = Inventory.objects.get(pk=identify)
 
@@ -183,6 +188,7 @@ class CreateMovementType(graphene.Mutation):
     message = graphene.String()
     movementType = graphene.Field(MovementTypeTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return CreateMovementType(ok=False, message='Params is not defined', movementType=None)
@@ -216,6 +222,7 @@ class UpdateMovementType(graphene.Mutation):
     message = graphene.String()
     movementType = graphene.Field(MovementTypeTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         movement_type_instance = MovementType.objects.get(pk=identify)
 
@@ -251,6 +258,7 @@ class CreateMovement(graphene.Mutation):
     message = graphene.String()
     movement = graphene.Field(MovementTypes)
 
+    @login_required
     @transaction.atomic()
     def mutate(self, info, params):
         if params is None:
@@ -298,6 +306,7 @@ class UpdateMovement(graphene.Mutation):
     ok = graphene.Boolean()
     movement = graphene.Field(MovementTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         movement_instance = Store.objects.get(pk=identify)
 

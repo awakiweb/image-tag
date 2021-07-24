@@ -1,4 +1,5 @@
 from django.db import models
+from money.models import Money
 
 
 class Brand(models.Model):
@@ -18,7 +19,6 @@ class Model(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
 
-    brand = models.ForeignKey(Brand, related_name='models', on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
 
     created_at = models.DateField(auto_now_add=True, null=True)
@@ -41,6 +41,7 @@ class Size(models.Model):
 
 class Product(models.Model):
     size = models.ForeignKey(Size, related_name='products', on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
     model = models.ForeignKey(Model, related_name='products', on_delete=models.CASCADE)
     category = models.ForeignKey('category.Category', related_name='products', on_delete=models.CASCADE)
 
@@ -74,6 +75,7 @@ class Product(models.Model):
 
 
 class ProductPrice(models.Model):
+    money = models.ForeignKey(Money, related_name='product_prices', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='product_prices', on_delete=models.CASCADE)
 
     PURCHASE_PRICE = 'P'

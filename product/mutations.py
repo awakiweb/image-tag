@@ -1,5 +1,6 @@
 import graphene
 from django.db import transaction
+from graphql_jwt.decorators import login_required
 
 from .models import Brand, Model, Size, Product, ProductPrice
 from .types import BrandTypes, ModelTypes, SizeTypes, ProductTypes
@@ -20,7 +21,6 @@ class ModelInput(graphene.InputObjectType):
     name = graphene.String(required=True)
     description = graphene.String()
 
-    brand_id = graphene.Int(required=True)
     active = graphene.Boolean()
 
 
@@ -31,6 +31,7 @@ class SizeInput(graphene.InputObjectType):
 
 class ProductInput(graphene.InputObjectType):
     size_id = graphene.Int(required=True)
+    brand_id = graphene.Int(required=True)
     model_id = graphene.Int(required=True)
     category_id = graphene.Int(required=True)
 
@@ -56,6 +57,7 @@ class CreateBrand(graphene.Mutation):
     message = graphene.String()
     brand = graphene.Field(BrandTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return CreateBrand(ok=False, message='Params were not provided', brand=None)
@@ -85,6 +87,7 @@ class UpdateBrand(graphene.Mutation):
     message = graphene.String()
     brand = graphene.Field(BrandTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         brand_instance = Brand.objects.get(pk=identify)
 
@@ -115,16 +118,11 @@ class CreateModel(graphene.Mutation):
     ok = graphene.Boolean()
     model = graphene.Field(ModelTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params:
-            brand = Brand.objects.get(pk=params.brand_id)
-
-            if brand is None:
-                return CreateModel(ok=False, model=None)
-
             model_instance = Model(
                 name=params.name,
-                brand=brand,
                 description=params.description,
                 active=True
             )
@@ -142,12 +140,12 @@ class UpdateModel(graphene.Mutation):
     ok = graphene.Boolean()
     model = graphene.Field(ModelTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         model_instance = Model.objects.get(pk=identify)
 
         if model_instance:
             model_instance.name = params.name if params.name else model_instance.name
-            model_instance.brand = params.brand_id if params.brand_id else model_instance.brand
             model_instance.description = params.description if params.description else model_instance.description
             model_instance.active = params.active if params.active else model_instance.active
 
@@ -163,6 +161,7 @@ class CreateSize(graphene.Mutation):
     ok = graphene.Boolean()
     size = graphene.Field(SizeTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params:
             size_instance = Size(
@@ -183,6 +182,7 @@ class UpdateSize(graphene.Mutation):
     ok = graphene.Boolean()
     size = graphene.Field(SizeTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         size_instance = Size.objects.get(pk=identify)
 
@@ -202,6 +202,7 @@ class CreateProduct(graphene.Mutation):
     ok = graphene.Boolean()
     product = graphene.Field(ProductTypes)
 
+    @login_required
     @transaction.atomic()
     def mutate(self, info, params):
         if params is None:
@@ -214,11 +215,15 @@ class CreateProduct(graphene.Mutation):
             return CreateProduct(ok=False, product=None)
 
         size = Size.objects.get(pk=params.size_id)
+        brand = Brand.objects.get(pk=params.brand_id)
         model = Model.objects.get(pk=params.model_id)
         category = Category.objects.get(pk=params.category_id)
 
         if size is None:
             return CreateProduct(ok=False, product=None)
+
+        if brand is None:
+            return CreateModel(ok=False, model=None)
 
         if model is None:
             return CreateProduct(ok=False, product=None)
@@ -228,6 +233,7 @@ class CreateProduct(graphene.Mutation):
 
         product_instance = Product(
             size=size,
+            brand=brand,
             model=model,
             category=category,
             name=params.name,
@@ -271,6 +277,7 @@ class UpdateProduct(graphene.Mutation):
     ok = graphene.Boolean()
     product = graphene.Field(ProductTypes)
 
+    @login_required
     @transaction.atomic()
     def mutate(self, info, identify, params=None):
         product_instance = Product.objects.get(pk=identify)
@@ -288,11 +295,15 @@ class UpdateProduct(graphene.Mutation):
             return CreateProduct(ok=False, product=None)
 
         size = Size.objects.get(pk=params.size_id)
+        brand = Brand.objects.get(pk=params.brand_id)
         model = Model.objects.get(pk=params.model_id)
         category = Category.objects.get(pk=params.category_id)
 
         if size is None:
             size = product_instance.size
+
+        if brand is None:
+            brand = product_instance.brand
 
         if model is None:
             model = product_instance.model
@@ -301,6 +312,7 @@ class UpdateProduct(graphene.Mutation):
             category = product_instance.category
 
         product_instance.size = size
+        product_instance.brand = brand
         product_instance.model = model
         product_instance.category = category
         product_instance.name = params.name if params.name else product_instance.name

@@ -1,4 +1,5 @@
 import graphene
+from graphql_jwt.decorators import login_required
 
 from .models import Category
 from .types import CategoryTypes
@@ -30,6 +31,7 @@ class CreateCategory(graphene.Mutation):
     ok = graphene.Boolean()
     category = graphene.Field(CategoryTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return CreateCategory(ok=False, category=None)
@@ -63,6 +65,7 @@ class UpdateCategory(graphene.Mutation):
     ok = graphene.Boolean()
     category = graphene.Field(CategoryTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         category_instance = Category.objects.get(pk=identify)
 

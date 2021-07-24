@@ -1,4 +1,5 @@
 import graphene
+import graphql_jwt
 
 from category.mutations import CreateCategory, UpdateCategory
 
@@ -20,6 +21,10 @@ from sale.mutations import CreateSale, CreateInvoice, UpdateSale, UpdateSaleDeta
 # ************** #
 
 class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+
     create_category = CreateCategory.Field()
     update_category = UpdateCategory.Field()
 

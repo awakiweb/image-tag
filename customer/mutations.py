@@ -1,4 +1,5 @@
 import graphene
+from graphql_jwt.decorators import login_required
 
 from .models import Customer
 from .types import CustomerTypes
@@ -29,6 +30,7 @@ class CreateCustomer(graphene.Mutation):
     message = graphene.String()
     customer = graphene.Field(CustomerTypes)
 
+    @login_required
     def mutate(self, info, params):
         if params is None:
             return CreateCustomer(ok=False, message='Params were not provided', customer=None)
@@ -66,6 +68,7 @@ class UpdateCustomer(graphene.Mutation):
     message = graphene.String()
     customer = graphene.Field(CustomerTypes)
 
+    @login_required
     def mutate(self, info, identify, params=None):
         customer_instance = Customer.objects.get(pk=identify)
 

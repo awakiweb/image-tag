@@ -9,7 +9,7 @@ admin.site.register(Size)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'model', 'size', 'active')
+    list_display = ('id', 'name', 'category', 'brand', 'model', 'size', 'active')
     list_filter = ('category', 'model', 'size')
 
 
