@@ -62,28 +62,14 @@ class Product(models.Model):
     def get_purchase_price(self):
         try:
             product_price = self.product_prices.get(price_type=ProductPrice.PURCHASE_PRICE, active=True)
-            return product_price.price
+            return product_price
         except ProductPrice.DoesNotExist:
-            return 0
+            return None
 
     def get_sale_price(self):
         try:
             product_price = self.product_prices.get(price_type=ProductPrice.SALE_PRICE, active=True)
-            return product_price.price
-        except ProductPrice.DoesNotExist:
-            return 0
-
-    def get_purchase_money(self):
-        try:
-            money = self.product_prices.get(price_type=ProductPrice.PURCHASE_PRICE, active=True).money
-            return money
-        except ProductPrice.DoesNotExist:
-            return None
-
-    def get_sale_money(self):
-        try:
-            money = self.product_prices.get(price_type=ProductPrice.SALE_PRICE, active=True).money
-            return money
+            return product_price
         except ProductPrice.DoesNotExist:
             return None
 

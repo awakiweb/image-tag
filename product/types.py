@@ -1,9 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from .models import Brand, Model, Size, Product
-
-from money.types import MoneyTypes
+from .models import Brand, Model, Size, Product, ProductPrice
 
 
 # ************** TYPES MODELS ************** #
@@ -23,12 +21,14 @@ class SizeTypes(DjangoObjectType):
         model = Size
 
 
-class ProductTypes(DjangoObjectType):
-    purchase_price = graphene.Float()
-    sale_price = graphene.Float()
+class ProductPriceTypes(DjangoObjectType):
+    class Meta:
+        model = ProductPrice
 
-    purchase_money = graphene.Field(type=MoneyTypes)
-    sale_money = graphene.Field(type=MoneyTypes)
+
+class ProductTypes(DjangoObjectType):
+    purchase_price = graphene.Field(type=ProductPriceTypes)
+    sale_price = graphene.Field(type=ProductPriceTypes)
 
     class Meta:
         model = Product
@@ -39,8 +39,3 @@ class ProductTypes(DjangoObjectType):
     def resolve_sale_price(self, info):
         return self.get_sale_price()
 
-    def resolve_purchase_money(self, info):
-        return self.get_purchase_money()
-
-    def resolve_sale_money(self, info):
-        return self.get_sale_money()
