@@ -25,6 +25,9 @@ class ProductTypes(DjangoObjectType):
     purchase_price = graphene.Float()
     sale_price = graphene.Float()
 
+    purchase_money = graphene.Field
+    sale_money = graphene.Field
+
     class Meta:
         model = Product
 
@@ -33,3 +36,9 @@ class ProductTypes(DjangoObjectType):
 
     def resolve_sale_price(self, info):
         return self.get_sale_price()
+
+    def resolve_purchase_money(self, info):
+        return self.get_purchase_money()
+
+    def resolve_sale_money(self, info):
+        return self.get_sale_money()

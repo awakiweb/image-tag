@@ -73,6 +73,20 @@ class Product(models.Model):
         except ProductPrice.DoesNotExist:
             return 0
 
+    def get_purchase_money(self):
+        try:
+            money = self.product_prices.get(price_type=ProductPrice.PURCHASE_PRICE, active=True).money
+            return money
+        except ProductPrice.DoesNotExist:
+            return None
+
+    def get_sale_money(self):
+        try:
+            money = self.product_prices.get(price_type=ProductPrice.SALE_PRICE, active=True).money
+            return money
+        except ProductPrice.DoesNotExist:
+            return None
+
 
 class ProductPrice(models.Model):
     money = models.ForeignKey(Money, related_name='product_prices', on_delete=models.CASCADE)
