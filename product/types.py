@@ -3,6 +3,8 @@ from graphene_django.types import DjangoObjectType
 
 from .models import Brand, Model, Size, Product
 
+from money.types import MoneyTypes
+
 
 # ************** TYPES MODELS ************** #
 # ************** #
@@ -25,8 +27,8 @@ class ProductTypes(DjangoObjectType):
     purchase_price = graphene.Float()
     sale_price = graphene.Float()
 
-    purchase_money = graphene.Field
-    sale_money = graphene.Field
+    purchase_money = graphene.Field(type=MoneyTypes)
+    sale_money = graphene.Field(type=MoneyTypes)
 
     class Meta:
         model = Product
