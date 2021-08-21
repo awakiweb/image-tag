@@ -99,7 +99,7 @@ class Query(ObjectType):
         return Money.objects.filter(principal=False)
 
     def resolve_principal_money(self, info, **kwargs):
-        return Money.objects.filter(principal=True)
+        return Money.objects.get(principal=True)
 
     def resolve_money(self, info, **kwargs):
         identity = kwargs.get('id')
