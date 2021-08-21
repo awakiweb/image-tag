@@ -44,11 +44,9 @@ class ProductInput(graphene.InputObjectType):
 
     # not required
     purchase_price = graphene.Float()
-    purchase_money_id = graphene.Int()
 
     # not required
     sale_price = graphene.Float()
-    sale_money_id = graphene.Int()
 
     active = graphene.Boolean()
 
@@ -256,36 +254,32 @@ class CreateProduct(graphene.Mutation):
         if product_instance.pk is None:
             return CreateProduct(ok=False, message='EL PRODUCTO NO FUE GUARDADO, INTENTE MAS TARDE', product=None)
 
+        # get principal money
+        money = Money.objects.get(principal=True, active=True)
+
         # SAVE PURCHASE PRICE IF EXISTS
         if params.purchase_price:
-            purchase_money = Money.objects.get(pk=params.purchase_money_id)
+            purchase = ProductPrice(
+                product=product_instance,
+                money=money,
+                price_type=ProductPrice.PURCHASE_PRICE,
+                price=params.purchase_price,
+                active=True
+            )
 
-            if purchase_money is not None:
-                purchase = ProductPrice(
-                    product=product_instance,
-                    money=purchase_money,
-                    price_type=ProductPrice.PURCHASE_PRICE,
-                    price=params.purchase_price,
-                    active=True
-                )
-
-                purchase.save()
+            purchase.save()
 
         # SAVE SALE PRICE IF EXISTS
         if params.sale_price:
-            sale_money = Money.objects.get(pk=params.sale_money_id)
+            sale = ProductPrice(
+                product=product_instance,
+                money=money,
+                price_type=ProductPrice.SALE_PRICE,
+                price=params.sale_price,
+                active=True
+            )
 
-            if sale_money is not None:
-                sale = ProductPrice(
-                    product=product_instance,
-                    money=sale_money,
-                    price_type=ProductPrice.SALE_PRICE,
-                    price=params.sale_price,
-                    active=True
-                )
-
-                sale.save()
-
+            sale.save()
         return CreateProduct(ok=True, message='', product=product_instance)
 
 
@@ -349,8 +343,8 @@ class UpdateProduct(graphene.Mutation):
         sale = ProductPrice.objects.get(
             product=product_instance, active=True, price_type=ProductPrice.SALE_PRICE)
 
-        purchase_money = Money.objects.get(pk=params.purchase_money_id)
-        sale_money = Money.objects.get(pk=params.sale_money_id)
+        # get principal money
+        money = Money.objects.get(principal=True, active=True)
 
         # if new purchase price is different from preview one
         # create new purchase price and made last price un active
@@ -360,7 +354,7 @@ class UpdateProduct(graphene.Mutation):
 
             new_purchase = ProductPrice(
                 product=product_instance,
-                money=purchase_money,
+                money=money,
                 price_type=ProductPrice.PURCHASE_PRICE,
                 price=params.purchase_price,
                 active=True
@@ -370,8 +364,8 @@ class UpdateProduct(graphene.Mutation):
         elif purchase.price == params.purchase_price:
             # if the price is the same but money it is different
             # modify only money
-            if purchase.money.id != purchase_money.id:
-                purchase.money = purchase_money
+            if purchase.money.id != money.id:
+                purchase.money = money
                 purchase.save()
 
         # if new sale price is different from preview one
@@ -384,7 +378,7 @@ class UpdateProduct(graphene.Mutation):
                 product=product_instance,
                 price_type=ProductPrice.SALE_PRICE,
                 price=params.sale_price,
-                money=sale_money,
+                money=money,
                 active=True
             )
 
@@ -392,8 +386,8 @@ class UpdateProduct(graphene.Mutation):
         elif sale.price == params.sale_price:
             # if the price is the same but money it is different
             # modify only money
-            if sale.money.id != sale_money.id:
-                sale.money = sale_money
+            if sale.money.id != money.id:
+                sale.money = money
                 sale.save()
 
         return UpdateProduct(ok=True, product=product_instance)

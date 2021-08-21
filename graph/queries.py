@@ -28,6 +28,7 @@ from sale.types import SaleTypes, SaleDetailTypes, InvoiceTypes
 class Query(ObjectType):
     # ************** MONEYS ************** #
     # ************** #
+    principal_money = graphene.Field(MoneyTypes, principal=graphene.Boolean())
     money = graphene.Field(MoneyTypes, id=graphene.Int())
     moneys = graphene.List(MoneyTypes)
 
@@ -93,6 +94,10 @@ class Query(ObjectType):
 
     # ************** MONEYS ************** #
     # ************** #
+    def resolve_principal_money(self, info, **kwargs):
+        principal = kwargs.get('principal')
+        return Money.objects.filter(principal=principal)
+
     def resolve_money(self, info, **kwargs):
         identity = kwargs.get('id')
 
