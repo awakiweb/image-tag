@@ -95,7 +95,7 @@ class Query(ObjectType):
 
     # ************** MONEYS ************** #
     # ************** #
-    def not_resolve_principal_money(self, info, **kwargs):
+    def resolve_not_principal_money(self, info, **kwargs):
         return Money.objects.filter(principal=False)
 
     def resolve_principal_money(self, info, **kwargs):
