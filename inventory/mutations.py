@@ -30,6 +30,7 @@ class InventoryInput(graphene.InputObjectType):
 class MovementTypeInput(graphene.InputObjectType):
     name = graphene.String(required=True)
     type = graphene.String(required=True)
+
     active = graphene.Boolean()
 
 
