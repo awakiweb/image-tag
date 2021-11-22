@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     'graph',
     'money',
+    'finance',
 ]
 
 # Graphql Integration
