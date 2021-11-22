@@ -59,8 +59,8 @@ class Query(ObjectType):
         return ExchangeRate.objects.all()
 
     def resolve_statement_account(self, info, **kwargs):
-        incomes = MovementAccount.objects.filter(movement_type__type=MovementType.ENTRY).aggregate(total=Sum('value'))['total'] or Decimal()
-        expenses = MovementAccount.objects.filter(movement_type__type=MovementType.DEPARTURE).aggregate(total=Sum('value'))['total'] or Decimal()
+        incomes = MovementAccount.objects.filter(movement_type__type=MovementType.ENTRY).aggregate(total=Sum('value'))
+        expenses = MovementAccount.objects.filter(movement_type__type=MovementType.DEPARTURE).aggregate(total=Sum('value'))
 
-        total = incomes - expenses
-        return StatementAccount(incomes=incomes, expenses=expenses, total=total)
+        total = incomes.total - expenses.total
+        return StatementAccount(incomes=incomes.total, expenses=expenses.total, total=total)

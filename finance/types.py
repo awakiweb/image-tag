@@ -1,10 +1,10 @@
 import graphene
-from graphene_django.types import DjangoObjectType
+from graphene_django.types import ObjectType
 
 
 # ************** TYPES MODELS ************** #
 # ************** #
-class StatementAccount(DjangoObjectType):
+class StatementAccount(ObjectType):
     income = graphene.Float()
     expense = graphene.Float()
 
