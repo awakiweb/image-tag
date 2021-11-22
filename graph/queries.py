@@ -63,4 +63,4 @@ class Query(ObjectType):
         expenses = MovementAccount.objects.filter(movement_type__type=MovementType.DEPARTURE).aggregate(total=Sum('value'))
 
         total = incomes.total - expenses.total
-        return StatementAccount(incomes=incomes.total, expenses=expenses.total, total=total)
+        return StatementAccount(income=incomes.total, expense=expenses.total, total=total)

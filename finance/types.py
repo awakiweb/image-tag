@@ -7,5 +7,4 @@ from graphene_django.types import ObjectType
 class StatementAccount(ObjectType):
     income = graphene.Float()
     expense = graphene.Float()
-
     total = graphene.Float()
