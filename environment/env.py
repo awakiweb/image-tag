@@ -1,15 +1,15 @@
 # var environment
 
-prod_database = 'd2jk06orkej8o7'
-prod_user = 'qtrtlofyxfclao'
-prod_password = '6ad640cf6ae18222e924072373f995c937d6ae49958031ce0884e322bdb5e3ba'
-prod_host = 'ec2-18-204-101-137.compute-1.amazonaws.com'
+prod_database = 'd4kqtbjva3j5cn'
+prod_user = 'igemzljnsyymdq'
+prod_password = 'bfe3d3502a4c8bfab06e4b17d3210faa369cf81d23fa7fe64a13b829108f8f27'
+prod_host = 'ec2-23-23-141-171.compute-1.amazonaws.com'
 prod_port = '5432'
 
-dev_database = 'elephantus_db'
-dev_user = 'postgres'
-dev_password = '12345'
-dev_host = 'localhost'
+dev_database = 'd4kqtbjva3j5cn'
+dev_user = 'igemzljnsyymdq'
+dev_password = 'bfe3d3502a4c8bfab06e4b17d3210faa369cf81d23fa7fe64a13b829108f8f27'
+dev_host = 'ec2-23-23-141-171.compute-1.amazonaws.com'
 dev_port = '5432'
 
 # profile environment
