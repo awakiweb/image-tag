@@ -11,5 +11,5 @@ class MoneyAdmin(admin.ModelAdmin):
 @admin.register(MovementAccount)
 class MoneyAdmin(admin.ModelAdmin):
     list_filter = ('movement_type',)
-    list_display = ('movement_type', 'money', 'date', 'value')
+    list_display = ('movement_type', 'id', 'money', 'date', 'value')
 
