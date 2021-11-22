@@ -50,15 +50,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     'graph',
-    'dashboard',
-    'employee',
     'money',
-    'category',
-    'product',
-    'product_detail',
-    'inventory',
-    'customer',
-    'sale'
 ]
 
 # Graphql Integration
@@ -112,7 +104,7 @@ MAX_UPLOAD_SIZE = '2621440'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [''],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -186,7 +178,6 @@ USE_TZ = True
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder'
 ]
 
 
@@ -211,7 +202,7 @@ STATICFILES_DIRS = (
 #  Add configuration for static files storage using whitenoise
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-#prod_db = dj_database_url.config(conn_max_age=500)
-#DATABASES['default'].update(prod_db)
+# prod_db = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(prod_db)
 
 django_heroku.settings(locals())
