@@ -8,7 +8,7 @@ from money.models import Money, ExchangeRate
 from money.types import MoneyTypes, ExchangeRateTypes
 
 from finance.models import MovementAccount, MovementType
-from finance.types import StatementAccount
+from finance.types import StatementAccount, DashboardType, DashboardTypeDate
 
 
 # ************** QUERY MODELS ************** #
@@ -24,9 +24,11 @@ class Query(ObjectType):
     exchange_rate = graphene.Field(ExchangeRateTypes, id=graphene.Int())
     exchange_rates = graphene.List(ExchangeRateTypes)
 
-    # ************** MONEYS ************** #
+    # ************** FINANCE ************** #
     # ************** #
     statement_account = graphene.Field(StatementAccount)
+    dashboard_type = graphene.List(DashboardType, first_date=graphene.Date(), last_date=graphene.Date())
+    dashboard_type_date = graphene.List(DashboardTypeDate, first_date=graphene.Date(), last_date=graphene.Date())
 
     # ************** MONEYS ************** #
     # ************** #
@@ -67,3 +69,27 @@ class Query(ObjectType):
 
         total = total_income - total_expense
         return StatementAccount(income=total_income, expense=total_expense, total=total)
+
+    def resolve_dashboard_type(self, info, **kwargs):
+        first_date = kwargs.get('first_date')
+        last_date = kwargs.get('last_date')
+
+        movements = MovementAccount.objects.filter(movement_type__type=MovementType.DEPARTURE)
+
+        if first_date and last_date:
+            movements = movements.filter(date__gte=first_date, date__lte=last_date)
+
+        movements = movements.values('movement_type__name').annotate(total=Sum('value')).order_by('-total')
+        return [DashboardType(category=item['movement_type__name'], total=item['total']) for item in movements]
+
+    def resolve_dashboard_type_date(self, info, **kwargs):
+        first_date = kwargs.get('first_date')
+        last_date = kwargs.get('last_date')
+
+        movements = MovementAccount.objects.filter(movement_type__type=MovementType.DEPARTURE)
+
+        if first_date and last_date:
+            movements = movements.filter(date__gte=first_date, date__lte=last_date)
+
+        movements = movements.values('movement_type__name', 'date').annotate(total=Sum('value')).order_by('date')
+        return [DashboardTypeDate(date=item['date'], category=item['movement_type__name'], total=item['total']) for item in movements]

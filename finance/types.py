@@ -8,3 +8,14 @@ class StatementAccount(ObjectType):
     income = graphene.Float()
     expense = graphene.Float()
     total = graphene.Float()
+
+
+class DashboardType(ObjectType):
+    total = graphene.Float()
+    category = graphene.String()
+
+
+class DashboardTypeDate(ObjectType):
+    date = graphene.Date()
+    total = graphene.Float()
+    category = graphene.String()
