@@ -30,7 +30,7 @@ SECRET_KEY = 'z@(b(r6=g0^m!)3ulke(h6qea)0s1103jy1ny#w4gr$q1mtq*6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "localhost:8000", "localhost:4200", "localhost:4300", "localhost:3000"]
+ALLOWED_HOSTS = ["localhost", "localhost:8000", "localhost:4200", "localhost:4300", "localhost:3000", "localhost:3002"]
 
 
 # Application definition
@@ -89,7 +89,7 @@ GRAPHQL_JWT = {
 
 
 # change this for production
-CORS_ORIGIN_WHITELIST = ['http://localhost:4200', 'http://localhost:4300', 'http://localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:4200', 'http://localhost:4300', 'http://localhost:3000', 'http://localhost:3002']
 
 
 # default auto field id
