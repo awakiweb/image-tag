@@ -75,11 +75,11 @@ class Query(ObjectType):
         last_date = kwargs.get('last_date')
 
         movements = MovementAccount.objects.filter(movement_type__type=MovementType.DEPARTURE)
-        all_movements = movements.aggregate(total=Sum('value'))
 
         if first_date and last_date:
             movements = movements.filter(date__gte=first_date, date__lte=last_date)
 
+        all_movements = movements.aggregate(total=Sum('value'))
         movements = movements.values('movement_type__name').annotate(total=Sum('value')).order_by('-total')
         return [DashboardType(category=item['movement_type__name'], total=item['total'], percentage=(item['total']/all_movements['total']) * 100) for item in movements]
 
