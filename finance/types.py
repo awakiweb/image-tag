@@ -13,6 +13,7 @@ class StatementAccount(ObjectType):
 class DashboardType(ObjectType):
     total = graphene.Float()
     category = graphene.String()
+    percentage = graphene.Float()
 
 
 class DashboardTypeDate(ObjectType):
