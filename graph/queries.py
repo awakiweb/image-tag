@@ -1,3 +1,4 @@
+import datetime
 import graphene
 from graphene_django.types import ObjectType
 
@@ -29,6 +30,7 @@ class Query(ObjectType):
     statement_account = graphene.Field(StatementAccount)
     dashboard_type = graphene.List(DashboardType, first_date=graphene.Date(), last_date=graphene.Date())
     dashboard_type_date = graphene.List(DashboardTypeDate, first_date=graphene.Date(), last_date=graphene.Date())
+    dashboard_type_month = graphene.List(DashboardTypeDate, month=graphene.Int(), year=graphene.Int())
 
     # ************** MONEYS ************** #
     # ************** #
@@ -94,3 +96,15 @@ class Query(ObjectType):
 
         movements = movements.values('movement_type__name', 'date').annotate(total=Sum('value')).order_by('date')
         return [DashboardTypeDate(date=item['date'], category=item['movement_type__name'], total=item['total']) for item in movements]
+
+    def resolve_dashboard_type_month(self, info, **kwargs):
+        month = kwargs.get('month')
+        year = kwargs.get('year')
+
+        movements = MovementAccount.objects.filter(movement_type__type=MovementType.DEPARTURE)
+
+        if month and year:
+            movements = movements.filter(date__month=month, date__year=year)
+
+        movements = movements.values('movement_type__name', 'date__month', 'date__year').annotate(total=Sum('value')).order_by('-total', 'date__month', 'date__year')
+        return [DashboardTypeDate(date=datetime.date(year=item['date__year'], month=item['date__month'], day=1), category=item['movement_type__name'], total=item['total']) for item in movements]
