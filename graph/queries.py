@@ -4,12 +4,13 @@ from graphene_django.types import ObjectType
 
 from decimal import Decimal
 from django.db.models import Sum
+from graphql_jwt.decorators import login_required
 
 from money.models import Money, ExchangeRate
 from money.types import MoneyTypes, ExchangeRateTypes
 
-from finance.models import MovementAccount, MovementType
-from finance.types import StatementAccount, DashboardType, DashboardTypeDate
+from finance.models import MovementCategory, MovementType, Wallet, MovementAccount, MovementType
+from finance.types import MovementCategoryTypes, MovementTypeTypes, WalletTypes, MovementAccountTypes, StatementAccount, DashboardType, DashboardTypeDate
 
 
 # ************** QUERY MODELS ************** #
@@ -19,14 +20,23 @@ class Query(ObjectType):
     # ************** #
     not_principal_money = graphene.List(MoneyTypes)
     principal_money = graphene.Field(MoneyTypes)
-    money = graphene.Field(MoneyTypes, id=graphene.Int())
+    money = graphene.Field(MoneyTypes, id=graphene.Int(required=True))
     moneys = graphene.List(MoneyTypes)
 
-    exchange_rate = graphene.Field(ExchangeRateTypes, id=graphene.Int())
+    exchange_rate = graphene.Field(ExchangeRateTypes, id=graphene.Int(required=True))
     exchange_rates = graphene.List(ExchangeRateTypes)
 
     # ************** FINANCE ************** #
     # ************** #
+    wallet = graphene.Field(WalletTypes, id=graphene.Int(required=True))
+    wallets = graphene.List(WalletTypes)
+
+    movement_categories = graphene.List(MovementCategoryTypes)
+    movement_types = graphene.List(MovementTypeTypes)
+
+    movement_account = graphene.Field(MovementAccountTypes, id=graphene.Int(required=True))
+    movement_accounts = graphene.List(MovementAccountTypes, wallet_id=graphene.Int(required=True))
+
     statement_account = graphene.Field(StatementAccount)
     dashboard_type = graphene.List(DashboardType, first_date=graphene.Date(), last_date=graphene.Date())
     dashboard_type_date = graphene.List(DashboardTypeDate, first_date=graphene.Date(), last_date=graphene.Date())
@@ -34,31 +44,54 @@ class Query(ObjectType):
 
     # ************** MONEYS ************** #
     # ************** #
+    @login_required
     def resolve_not_principal_money(self, info, **kwargs):
         return Money.objects.filter(principal=False)
 
+    @login_required
     def resolve_principal_money(self, info, **kwargs):
         return Money.objects.get(principal=True)
 
+    @login_required
     def resolve_money(self, info, **kwargs):
-        identity = kwargs.get('id')
+        return Money.objects.get(pk=kwargs.get('id'), active=True)
 
-        if identity is not None:
-            return Money.objects.get(pk=identity)
-
-        return None
-
+    @login_required
     def resolve_moneys(self, info, **kwargs):
-        return Money.objects.all()
+        return Money.objects.filter(active=True)
 
+    @login_required
     def resolve_exchange_rate(self, info, **kwargs):
-        identity = kwargs.get('id')
+        return ExchangeRate.objects.get(pk=kwargs.get('id'))
 
-        if identity is not None:
-            return ExchangeRate.objects.get(pk=identity)
+    @login_required
+    def resolve_wallet(self, info, **kwargs):
+        user = info.context.user
+        return Wallet.objects.get(user=user, pk=kwargs.get('id'), active=True)
 
-        return None
+    @login_required
+    def resolve_wallets(self, info, **kwargs):
+        user = info.context.user
+        return Wallet.objects.filter(user=user, active=True)
 
+    @login_required
+    def resolve_movement_categories(self, info, **kwargs):
+        return MovementCategory.objects.filter(active=True)
+
+    @login_required
+    def resolve_movement_types(self, info, **kwargs):
+        user = info.context.user
+        return MovementType.objects.filter(user=user, active=True)
+
+    @login_required
+    def resolve_movement_account(self, info, **kwargs):
+        return MovementAccount.objects.get(pk=kwargs.get('id'), active=True)
+
+    @login_required
+    def resolve_movement_accounts(self, info, **kwargs):
+        return MovementAccount.objects.filter(wallet_id=kwargs.get('wallet_id'), active=True)
+
+    @login_required
     def resolve_exchange_rates(self, info, **kwargs):
         return ExchangeRate.objects.all()
 

@@ -21,4 +21,4 @@ class WalletAdmin(admin.ModelAdmin):
 @admin.register(MovementAccount)
 class MovementAccountAdmin(admin.ModelAdmin):
     list_filter = ('movement_type',)
-    list_display = ('movement_type', 'id', 'wallet', 'money', 'date', 'value')
+    list_display = ('movement_type', 'id', 'wallet', 'date', 'value')
