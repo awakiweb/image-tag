@@ -105,6 +105,7 @@ class CreateMovementType(graphene.Mutation):
     class Arguments:
         params = MovementTypeInput(required=True)
 
+    id = graphene.Int()
     ok = graphene.Boolean()
     message = graphene.String()
 
@@ -123,8 +124,8 @@ class CreateMovementType(graphene.Mutation):
             )
 
             movement_type_instance.save()
-            return CreateMovementType(ok=True, message='Tipo de movimiento creado con exito')
-        return CreateMovementType(ok=False, message='Parametros invalidos')
+            return CreateMovementType(ok=True, id=movement_type_instance.id, message='Tipo de movimiento creado con exito')
+        return CreateMovementType(ok=False, id=0, message='Parametros invalidos')
 
 
 class UpdateMovementType(graphene.Mutation):
