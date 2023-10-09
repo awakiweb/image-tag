@@ -1,15 +1,15 @@
 # var environment
 
-prod_database = 'd4kqtbjva3j5cn'
-prod_user = 'igemzljnsyymdq'
-prod_password = 'bfe3d3502a4c8bfab06e4b17d3210faa369cf81d23fa7fe64a13b829108f8f27'
-prod_host = 'ec2-23-23-141-171.compute-1.amazonaws.com'
+prod_database = 'lots_project_db'
+prod_user = 'postgres'
+prod_password = '12345'
+prod_host = 'localhost'
 prod_port = '5432'
 
-dev_database = 'd4kqtbjva3j5cn'
-dev_user = 'igemzljnsyymdq'
-dev_password = 'bfe3d3502a4c8bfab06e4b17d3210faa369cf81d23fa7fe64a13b829108f8f27'
-dev_host = 'ec2-23-23-141-171.compute-1.amazonaws.com'
+dev_database = 'lots_project_db'
+dev_user = 'postgres'
+dev_password = '12345'
+dev_host = 'localhost'
 dev_port = '5432'
 
 # profile environment

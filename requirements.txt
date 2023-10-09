@@ -1,5 +1,4 @@
 aniso8601==7.0.0
-arabic-reshaper==2.1.1
 asgiref==3.4.1
 beautifulsoup4==4.9.0
 cairocffi==1.2.0

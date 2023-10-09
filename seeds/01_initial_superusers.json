@@ -12,19 +12,5 @@
       "is_staff": true,
       "is_active": true
     }
-  },
-  {
-    "model": "auth.user",
-    "pk": 2,
-    "fields": {
-      "username": "test",
-      "password": "pbkdf2_sha256$120000$ZBaynuRkjV9T$f81qxJNrRyPYSeEWeX/ldh883CfUjHzvrgQqUo802aA=",
-      "first_name": "test",
-      "last_name": "test",
-      "email": "test@test.com",
-      "is_superuser": true,
-      "is_staff": true,
-      "is_active": true
-    }
   }
 ]

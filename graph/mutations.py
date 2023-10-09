@@ -1,9 +1,8 @@
 import graphene
 import graphql_jwt
 
-from finance.mutations import CreateWallet, UpdateWallet, DeleteWallet
-from finance.mutations import CreateMovementType, UpdateMovementType, DeleteMovementType
-from finance.mutations import CreateMovementAccount, UpdateMovementAccount, DeleteMovementAccount
+from projects.mutations import CreateProject, UpdateProject, DeleteProject, ActivateProject, CreateProjectFile
+from customers.mutations import CreateCustomer
 
 
 # ************** MUTATIONS ************** #
@@ -14,14 +13,12 @@ class Mutation(graphene.ObjectType):
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
 
-    create_wallet = CreateWallet.Field()
-    update_wallet = UpdateWallet.Field()
-    delete_wallet = DeleteWallet.Field()
+    create_project = CreateProject.Field()
+    update_project = UpdateProject.Field()
+    delete_project = DeleteProject.Field()
+    activate_project = ActivateProject.Field()
 
-    create_movement_type = CreateMovementType.Field()
-    update_movement_type = UpdateMovementType.Field()
-    delete_movement_type = DeleteMovementType.Field()
+    create_project_file = CreateProjectFile.Field()
 
-    create_movement_account = CreateMovementAccount.Field()
-    update_movement_account = UpdateMovementAccount.Field()
-    delete_movement_account = DeleteMovementAccount.Field()
+    create_customer = CreateCustomer.Field()
+

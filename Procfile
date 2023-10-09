@@ -1,1 +1,1 @@
-web: gunicorn elephantus.wsgi --log-file -
+web: gunicorn lots-map.wsgi --log-file -
