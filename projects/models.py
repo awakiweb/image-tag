@@ -1,11 +1,12 @@
 from django.db import models
 
-from cities.models import City
+from cities.models import County, City
 
 
 class Project(models.Model):
     name = models.CharField(max_length=150)
-    city = models.ForeignKey(City, related_name='projects', on_delete=models.CASCADE)
+    county = models.ForeignKey(County, related_name='projects', on_delete=models.CASCADE)
+    city = models.ForeignKey(City, related_name='projects', on_delete=models.CASCADE, blank=True, null=True)
     active = models.BooleanField(default=True)
 
     created_at = models.DateField(auto_now_add=True, null=True)
@@ -16,6 +17,9 @@ class Project(models.Model):
 
     def __str__(self):
         return "{}".format(self.name)
+
+    def active_files(self):
+        return self.project_files.filter(active=True)
 
 
 class ProjectFile(models.Model):

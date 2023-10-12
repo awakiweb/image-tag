@@ -1,8 +1,9 @@
 import graphene
 import graphql_jwt
 
-from projects.mutations import CreateProject, UpdateProject, DeleteProject, ActivateProject, CreateProjectFile
-from customers.mutations import CreateCustomer
+from projects.mutations import CreateProject, UpdateProject, DeleteProject, ActivateProject
+from projects.mutations import CreateProjectFile, UpdateProjectFile, DeleteProjectFile
+from customers.mutations import CreateCustomer, UpdateCustomer
 
 
 # ************** MUTATIONS ************** #
@@ -19,6 +20,8 @@ class Mutation(graphene.ObjectType):
     activate_project = ActivateProject.Field()
 
     create_project_file = CreateProjectFile.Field()
+    update_project_file = UpdateProjectFile.Field()
+    delete_project_file = DeleteProjectFile.Field()
 
     create_customer = CreateCustomer.Field()
-
+    update_customer = UpdateCustomer.Field()
