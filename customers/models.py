@@ -11,5 +11,7 @@ class Customer(models.Model):
     title = models.CharField(max_length=100)
     company_name = models.CharField(max_length=100)
 
+    active = models.BooleanField(default=True)
+
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)

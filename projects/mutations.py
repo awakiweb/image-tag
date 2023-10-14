@@ -74,6 +74,7 @@ class UpdateProject(graphene.Mutation):
             if county is None:
                 return CreateProject(id=0, ok=False, message='This city does not exists')
 
+            instance.publish = params.publish
             instance.name = params.name
             instance.county = county
             instance.city = city
@@ -102,27 +103,6 @@ class DeleteProject(graphene.Mutation):
 
             return DeleteProject(ok=True, message='Project was inactivate')
         return DeleteProject(ok=False, message='Project was not found')
-
-
-class ActivateProject(graphene.Mutation):
-    class Arguments:
-        pk = graphene.ID(required=True)
-
-    ok = graphene.Boolean()
-    message = graphene.String()
-
-    @login_required
-    def mutate(self, info, pk):
-        if not pk:
-            return ActivateProject(ok=False, message='Params are invalid')
-
-        instance = Project.objects.get(pk=pk, active=False)
-        if instance:
-            instance.active = True
-            instance.save()
-
-            return ActivateProject(ok=True, message='Project was activate')
-        return ActivateProject(ok=False, message='Project was not found')
 
 
 class CreateProjectFile(graphene.Mutation):

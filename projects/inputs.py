@@ -3,6 +3,7 @@ import graphene
 
 class ProjectInput(graphene.InputObjectType):
     name = graphene.String(required=True)
+    publish = graphene.Int(required=True)
     city_id = graphene.Int(required=True)
     county_id = graphene.Int(required=True)
 

@@ -30,6 +30,7 @@ class CreateCustomer(graphene.Mutation):
             phone_number=params.phone_number,
             title=params.title if params.title is not None else "",
             company_name=params.company_name if params.company_name is not None else "",
+            active=True,
         )
 
         new_instance.save()
@@ -62,3 +63,23 @@ class UpdateCustomer(graphene.Mutation):
             instance.save()
             return UpdateCustomer(ok=True, message='Customer updated successfully')
         return UpdateCustomer(ok=False, message='Customer was not updated')
+
+
+class DeleteCustomer(graphene.Mutation):
+    class Arguments:
+        pk = graphene.ID(required=True)
+
+    ok = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, pk):
+        if not pk:
+            return DeleteCustomer(ok=False, message='Params are invalid')
+
+        instance = Customer.objects.get(pk=pk)
+        if instance:
+            instance.active = False
+
+            instance.save()
+            return DeleteCustomer(ok=True, message='Customer deleted successfully')
+        return DeleteCustomer(ok=False, message='Customer was not deleted')

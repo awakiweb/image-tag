@@ -8,6 +8,7 @@ class Project(models.Model):
     county = models.ForeignKey(County, related_name='projects', on_delete=models.CASCADE)
     city = models.ForeignKey(City, related_name='projects', on_delete=models.CASCADE, blank=True, null=True)
     active = models.BooleanField(default=True)
+    publish = models.BooleanField(default=True)
 
     created_at = models.DateField(auto_now_add=True, null=True)
     updated_at = models.DateField(auto_now=True, null=True)
