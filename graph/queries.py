@@ -46,10 +46,10 @@ class Query(ObjectType):
 
     @login_required
     def resolve_projects(self, info, **kwargs):
-        return Project.objects.all()
+        return Project.objects.filter(active=True)
 
     def resolve_project_files(self, info, **kwargs):
-        return ProjectFile.objects.filter(active=True, project__active=True)
+        return ProjectFile.objects.filter(active=True, project__active=True, project__publish=True)
 
     def resolve_excel_columns(self, info, **kwargs):
         return ExcelColumn.objects.all()
@@ -59,4 +59,4 @@ class Query(ObjectType):
 
     @login_required
     def resolve_customers(self, info, **kwargs):
-        return Customer.objects.all()
+        return Customer.objects.filter(active=True)
