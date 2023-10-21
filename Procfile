@@ -1,1 +1,1 @@
-web: gunicorn lots-map.wsgi --log-file -
+web: gunicorn image-tag.wsgi --log-file -

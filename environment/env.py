@@ -1,12 +1,12 @@
 # var environment
 
-prod_database = 'lots_project_db'
+prod_database = 'image_tags_db'
 prod_user = 'postgres'
 prod_password = '12345'
 prod_host = 'localhost'
 prod_port = '5432'
 
-dev_database = 'lots_project_db'
+dev_database = 'image_tags_db'
 dev_user = 'postgres'
 dev_password = '12345'
 dev_host = 'localhost'
