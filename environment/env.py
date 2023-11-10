@@ -2,8 +2,8 @@
 
 prod_database = 'image_tags_db'
 prod_user = 'postgres'
-prod_password = '12345'
-prod_host = 'localhost'
+prod_password = 'dajo$5525111873'
+prod_host = '192.168.64.163'
 prod_port = '5432'
 
 dev_database = 'image_tags_db'

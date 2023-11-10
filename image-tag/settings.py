@@ -17,6 +17,7 @@ import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import datetime
 from environment import env
+from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,8 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
-    'bootstrap4',
-    'crispy_forms',
 
     'graph',
     'images',
@@ -127,11 +126,11 @@ WSGI_APPLICATION = 'image-tag.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env.environment['name'],
-        'USER': env.environment['user'],
-        'PASSWORD': env.environment['password'],
-        'HOST': env.environment['host'],
-        'PORT': env.environment['port'],
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 

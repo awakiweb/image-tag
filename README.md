@@ -1,11 +1,13 @@
-# Plot Map API
+# Specifications
 
-## Specifications
+- Python 3.9
+- Django 3.2.5
+- graphene 2.1.8
 
-Django 3.2.5
+# Install
 
-graphene 2.1.8
+```docker-compose up --build```
 
-## Run
+```docker-compose exec api python manage.py migrate```
 
-all commands to run project are in reset_db.sh file
+```docker-compose exec api python loaddata seeds/01_initial_superusers```

@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      POSTGRES_DB: image_tags_db
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+
+
+  db:
+    image: postgres:14.9-bullseye
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./image_tag_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: image_tags_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+volumes:
+  image_tag_db:

@@ -116,3 +116,7 @@ uploads/
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
+
+# docker database
+database
+image_tag_db
